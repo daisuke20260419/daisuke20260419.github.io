@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 600" aria-hidden="true">
+  <defs>
+    <radialGradient id="glow" cx="50%" cy="46%" r="54%">
+      <stop offset="0" stop-color="#c9a35c" stop-opacity=".24"/>
+      <stop offset="1" stop-color="#08090c" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="frame" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#e2c274"/>
+      <stop offset="1" stop-color="#725527"/>
+    </linearGradient>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 10 5 0 10Z" fill="#c9a35c"/>
+    </marker>
+  </defs>
+  <rect width="900" height="600" rx="24" fill="#08090c"/>
+  <rect x="18" y="18" width="864" height="564" rx="18" fill="none" stroke="#2a2d34" stroke-width="2"/>
+  <circle cx="450" cy="292" r="250" fill="url(#glow)"/>
+  <g transform="translate(330 165)">
+    <rect width="240" height="250" rx="18" fill="#101218" stroke="url(#frame)" stroke-width="3"/>
+    <rect x="22" y="22" width="196" height="156" rx="10" fill="#171a22" stroke="#4d432d"/>
+    <path d="M64 136 98 86l28 34 24-25 35 41Z" fill="#c9a35c" opacity=".55"/>
+    <circle cx="170" cy="66" r="18" fill="#80c9a7" opacity=".75"/>
+    <path d="M72 213h96M92 230h56" stroke="#8f95a3" stroke-width="8" stroke-linecap="round" opacity=".65"/>
+  </g>
+  <g>
+    <circle cx="110" cy="224" r="56" fill="#11141a" stroke="#c9a35c" stroke-width="3"/>
+    <path d="M82 226h56M110 198v56" stroke="#c9a35c" stroke-width="7" stroke-linecap="round" opacity=".85"/>
+    <circle cx="790" cy="224" r="56" fill="#11141a" stroke="#80c9a7" stroke-width="3"/>
+    <path d="M762 230c18-28 38-28 56 0M774 206a16 16 0 1 0 32 0" fill="none" stroke="#80c9a7" stroke-width="7" stroke-linecap="round"/>
+    <circle cx="790" cy="472" r="56" fill="#11141a" stroke="#6e9ed7" stroke-width="3"/>
+    <path d="M764 470h52M790 444v52" stroke="#6e9ed7" stroke-width="7" stroke-linecap="round" transform="rotate(45 790 470)"/>
+    <circle cx="110" cy="472" r="56" fill="#11141a" stroke="#d17e71" stroke-width="3"/>
+    <path d="M80 486l20-22 18 14 25-31" fill="none" stroke="#d17e71" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+  <path d="M168 224H310M590 224h142M790 280v128M732 472H168M110 416V280" fill="none" stroke="#c9a35c" stroke-width="2.2" stroke-dasharray="8 8" marker-end="url(#arrow)"/>
+</svg>

@@ -1,0 +1,261 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <title>投資審査資料 ── VERION</title>
+  <style>
+    .rv-file{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:24px;align-items:center;margin-top:28px;padding:28px;border:1px solid rgba(201,163,92,.38);border-radius:8px;background:linear-gradient(135deg,rgba(201,163,92,.08),rgba(255,255,255,.012))}
+    .rv-file__meta{display:flex;align-items:center;gap:16px;min-width:0}
+    .rv-file__icon{flex:none;display:flex;align-items:center;justify-content:center;width:56px;height:70px;border:1px solid rgba(201,163,92,.5);background:#0d0d10;color:#c9a35c;font:700 13px/1 inherit;letter-spacing:.08em}
+    .rv-file__meta b{display:block;font-size:14px;word-break:break-all}
+    .rv-file__meta span{display:block;margin-top:6px;font-size:11px;color:#9a9aa3}
+    .rv-file__actions{display:flex;flex-wrap:wrap;gap:10px}
+    .rv-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:46px;padding:0 20px;border:1px solid rgba(201,163,92,.58);border-radius:6px;background:#c9a35c;color:#080809;font:700 12.5px/1 inherit;letter-spacing:.05em;text-decoration:none;cursor:pointer;transition:transform .2s,background .2s}
+    .rv-btn:hover{transform:translateY(-2px);background:#dfbd79}
+    .rv-btn--sub{background:transparent;color:#f2f2f4;border-color:rgba(255,255,255,.2)}
+    .rv-btn--sub:hover{background:rgba(255,255,255,.05);border-color:rgba(201,163,92,.58)}
+    .rv-ai{margin-top:28px;padding:24px;border:1px solid rgba(255,255,255,.14);border-radius:8px;background:#0b0b0e}
+    .rv-ai h4{font-size:12px;letter-spacing:.18em;color:#c9a35c;margin:0 0 16px}
+    .rv-ai__choices{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+    .rv-ai__choices a{display:flex;flex-direction:column;align-items:center;gap:6px;padding:20px 12px;border:1px solid rgba(255,255,255,.16);border-radius:8px;background:rgba(255,255,255,.02);color:#f2f2f4;text-decoration:none;transition:transform .2s,border-color .2s,background .2s}
+    .rv-ai__choices a:hover{transform:translateY(-2px);border-color:rgba(201,163,92,.58);background:rgba(201,163,92,.06)}
+    .rv-ai__choices i{display:flex;align-items:center;justify-content:center;width:42px;height:42px;border:1px solid rgba(201,163,92,.5);border-radius:50%;color:#c9a35c;font-style:normal;font-weight:700;font-size:13px}
+    .rv-ai__choices b{font-size:14px}
+    .rv-ai__choices span{font-size:11px;color:#9a9aa3}
+    .rv-prompt{margin-top:28px;padding:24px;border:1px solid rgba(255,255,255,.14);border-radius:8px;background:#0b0b0e}
+    .rv-prompt h4{font-size:12px;letter-spacing:.18em;color:#c9a35c;margin:0 0 12px}
+    .rv-prompt pre{margin:0;white-space:pre-wrap;font:12.5px/1.9 inherit;color:#d9d9de}
+    .rv-prompt button{margin-top:16px}
+    .rv-copied{color:#61c68b;font-size:12px;margin-left:10px}
+    @media(max-width:760px){.rv-file{grid-template-columns:1fr}.rv-ai__choices{grid-template-columns:1fr}.rv-ai__choices a{flex-direction:row;justify-content:flex-start;gap:14px;padding:16px 18px}}
+    /* ── 操作チュートリアル（原版より復元） ── */
+    .ar-btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:50px;padding:0 22px;border:1px solid rgba(201,163,92,.58);border-radius:4px;background:#c9a35c;color:#080809;font:700 13px/1 inherit;letter-spacing:.06em;text-decoration:none;cursor:pointer;transition:transform .2s ease,background .2s ease,border-color .2s ease}
+    .ar-btn:hover{transform:translateY(-2px);background:#dfbd79}
+    .ar-btn:disabled{opacity:.35;pointer-events:none}
+    .ar-btn--sub{background:transparent;color:var(--c-text,#f2f2f4);border-color:var(--c-line,rgba(255,255,255,.14))}
+    .ar-btn--sub:hover{background:rgba(255,255,255,.05);border-color:rgba(201,163,92,.58)}
+    .ar-tutorial{margin-top:34px;border:1px solid var(--c-line,rgba(255,255,255,.14));border-radius:8px;background:#0a0a0d;overflow:hidden}
+    .ar-tutorial__top{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:18px;padding:18px 22px;border-bottom:1px solid var(--c-line,rgba(255,255,255,.14))}
+    .ar-tutorial__top small{display:block;color:#9a9aa3;font-size:10px;letter-spacing:.14em}
+    .ar-tutorial__top strong{font-size:15px}
+    .ar-tutorial__bar{position:relative;height:3px;border-radius:2px;background:rgba(255,255,255,.08);overflow:hidden}
+    .ar-tutorial__bar i{position:absolute;top:0;bottom:0;left:0;width:20%;background:#c9a35c;transition:width .35s ease}
+    .ar-tutorial__top>button{border:0;background:none;color:#bcbcc4;font-size:11px;letter-spacing:.06em;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+    .ar-tutorial__top>button:hover{color:#c9a35c}
+    .ar-tutorial__body{display:grid;grid-template-columns:240px minmax(0,1fr)}
+    .ar-tutorial__nav{margin:0;padding:0;list-style:none;border-right:1px solid var(--c-line,rgba(255,255,255,.14))}
+    .ar-tutorial__nav button{display:grid;grid-template-columns:34px 1fr;column-gap:12px;align-items:center;width:100%;padding:18px 20px;border:0;border-bottom:1px solid var(--c-line,rgba(255,255,255,.14));background:none;color:#bcbcc4;text-align:left;cursor:pointer}
+    .ar-tutorial__nav li:last-child button{border-bottom:0}
+    .ar-tutorial__nav button i{display:flex;align-items:center;justify-content:center;width:30px;height:30px;border:1px solid var(--c-line,rgba(255,255,255,.2));border-radius:50%;font:600 10px/1 inherit;font-style:normal}
+    .ar-tutorial__nav button b{display:block;font-size:13px;color:#f2f2f4}
+    .ar-tutorial__nav button small{display:block;margin-top:3px;font-size:10.5px;color:#9a9aa3}
+    .ar-tutorial__nav button.is-on{background:rgba(201,163,92,.06);box-shadow:inset 2px 0 #c9a35c}
+    .ar-tutorial__nav button.is-on i{border-color:rgba(201,163,92,.6);color:#c9a35c}
+    .ar-tutorial__nav button.is-done i{border-color:rgba(97,198,139,.5);color:#61c68b}
+    .ar-tutorial__stage{display:flex;flex-direction:column;padding:30px 30px 26px;min-height:520px}
+    .ar-tutorial__panel{animation:ar-panel-in .35s ease}
+    .ar-tutorial__copy small{color:#c9a35c;font-size:11px;letter-spacing:.16em}
+    .ar-tutorial__copy h3{margin:10px 0 0;font-size:20px;line-height:1.5}
+    .ar-tutorial__copy p{margin:10px 0 0;color:#bcbcc4;font-size:13px;line-height:1.85}
+    .ar-tutorial__hint{margin:18px 0 0;padding:14px 16px;border:1px dashed var(--c-line,rgba(255,255,255,.2));border-radius:6px;color:#bcbcc4;font-size:12px;line-height:1.75}
+    .ar-tutorial__hint b{color:#f2f2f4}
+    .ar-download-demo{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:18px;align-items:center;margin-top:24px;padding:22px;border:1px solid rgba(201,163,92,.38);border-radius:6px;background:linear-gradient(135deg,rgba(201,163,92,.08),rgba(255,255,255,.012))}
+    .ar-download-demo b{display:block;font-size:13.5px;word-break:break-all}
+    .ar-download-demo span{display:block;margin-top:5px;color:#9a9aa3;font-size:11px}
+    .ar-file__icon{display:flex;align-items:center;justify-content:center;width:56px;height:70px;border:1px solid rgba(201,163,92,.5);background:#0d0d10;color:#c9a35c;font:700 13px/1 inherit;letter-spacing:.08em}
+    .ar-ai-choices{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:24px}
+    .ar-ai-choices a{display:flex;flex-direction:column;align-items:center;gap:6px;padding:22px 12px;border:1px solid var(--c-line,rgba(255,255,255,.16));border-radius:8px;background:rgba(255,255,255,.02);color:#f2f2f4;text-decoration:none;text-align:center;transition:transform .2s,border-color .2s,background .2s}
+    .ar-ai-choices a:hover{transform:translateY(-2px);border-color:rgba(201,163,92,.58);background:rgba(201,163,92,.06)}
+    .ar-ai-choices i{display:flex;align-items:center;justify-content:center;width:44px;height:44px;border:1px solid rgba(201,163,92,.5);border-radius:50%;color:#c9a35c;font-style:normal;font-weight:700;font-size:13px}
+    .ar-ai-choices b{margin-top:4px;font-size:14px}
+    .ar-ai-choices span{margin:2px 0 0;font-size:11px;color:#9a9aa3}
+    .ar-chat-demo{margin-top:24px;border:1px solid var(--c-line,rgba(255,255,255,.14));border-radius:8px;background:#0b0b0e;overflow:hidden}
+    .ar-chat-demo__head{display:flex;align-items:center;gap:10px;padding:12px 16px;border-bottom:1px solid var(--c-line,rgba(255,255,255,.14))}
+    .ar-chat-demo__head i{width:9px;height:9px;border-radius:50%;background:#61c68b}
+    .ar-chat-demo__head b{font-size:12.5px}
+    .ar-chat-demo__head span{margin-left:auto;color:#9a9aa3;font-size:10.5px}
+    .ar-chat-demo__space{display:flex;align-items:center;justify-content:center;min-height:130px;color:#9a9aa3;font-size:12px}
+    .ar-chat-demo__input{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;padding:12px 14px;border-top:1px solid var(--c-line,rgba(255,255,255,.14))}
+    .ar-chat-demo__input button{display:flex;align-items:center;justify-content:center;width:34px;height:34px;border:1px solid var(--c-line,rgba(255,255,255,.2));border-radius:50%;background:none;color:#f2f2f4;font-size:16px}
+    .ar-chat-demo__input>div span{display:block;color:#9a9aa3;font-size:12px}
+    .ar-chat-demo__input>div b{display:inline-flex;align-items:center;gap:8px;margin-top:8px;padding:7px 10px;border:1px solid rgba(201,163,92,.4);border-radius:5px;font-size:11px}
+    .ar-chat-demo__input>div b i{font-style:normal;padding:2px 5px;border:1px solid rgba(201,163,92,.5);color:#c9a35c;font-size:9px}
+    .ar-chat-demo__input>div b em{font-style:normal;color:#61c68b}
+    .ar-prompt-demo{margin-top:24px;padding:20px;border:1px solid var(--c-line,rgba(255,255,255,.14));border-radius:6px;background:#0b0b0e}
+    .ar-prompt-demo small{color:#c9a35c;font-size:11px;letter-spacing:.16em}
+    .ar-prompt-demo p{margin:12px 0 0;color:#d9d9de;font-size:12.5px;line-height:1.9}
+    .ar-prompt-demo .ar-btn{margin-top:16px}
+    .ar-paste-keys{display:flex;align-items:center;gap:8px;margin-top:18px;color:#bcbcc4;font-size:12px}
+    .ar-paste-keys span{padding:3px 8px;border:1px solid var(--c-line,rgba(255,255,255,.2));border-radius:4px;font-size:10px;color:#9a9aa3}
+    .ar-paste-keys b{display:flex;align-items:center;justify-content:center;min-width:34px;height:34px;padding:0 8px;border:1px solid var(--c-line,rgba(255,255,255,.2));border-bottom-width:2px;border-radius:6px;background:rgba(255,255,255,.03);font-size:13px}
+    .ar-paste-keys i{font-style:normal;color:#9a9aa3}
+    .ar-paste-keys em{margin-left:8px;font-style:normal}
+    .ar-answer-demo{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:28px}
+    .ar-answer-demo>div{display:grid;grid-template-columns:34px 1fr;column-gap:10px;padding:20px;border:1px solid var(--c-line,rgba(255,255,255,.14));border-radius:5px;background:rgba(255,255,255,.015)}
+    .ar-answer-demo i{grid-row:1/3;display:flex;align-items:center;justify-content:center;width:30px;height:30px;border:1px solid rgba(201,163,92,.4);border-radius:50%;color:#c9a35c;font:600 10px/1 inherit;font-style:normal}
+    .ar-answer-demo b{font-size:14px}
+    .ar-answer-demo span{margin-top:6px;color:#9a9aa3;font-size:11.5px;line-height:1.55}
+    .ar-tutorial__complete{display:flex;align-items:center;gap:12px;margin-top:22px;padding:18px 20px;border:1px solid rgba(97,198,139,.3);background:rgba(97,198,139,.05)}
+    .ar-tutorial__complete b{font-size:14px}
+    .ar-tutorial__complete span{color:#bcbcc4;font-size:12px;line-height:1.7}
+    .ar-tutorial__complete button{margin-left:auto;flex:0 0 auto}
+    .ar-tutorial__controls{display:flex;justify-content:space-between;gap:12px;margin-top:auto;padding-top:30px}
+    .ar-tutorial__controls .ar-btn{min-width:120px}
+    @keyframes ar-panel-in{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+    @media(max-width:800px){.ar-tutorial__body{grid-template-columns:1fr}.ar-tutorial__nav{display:flex;overflow-x:auto;border-right:0;border-bottom:1px solid var(--c-line,rgba(255,255,255,.14))}.ar-tutorial__nav li{flex:0 0 155px}.ar-tutorial__nav button{height:100%;border-bottom:0;border-right:1px solid var(--c-line,rgba(255,255,255,.14))}.ar-tutorial__nav button.is-on{box-shadow:inset 0 -2px #c9a35c}.ar-download-demo{grid-template-columns:auto 1fr}.ar-download-demo .ar-btn{grid-column:1/-1}}
+    @media(max-width:560px){.ar-tutorial__top{grid-template-columns:auto 1fr}.ar-tutorial__top>button{grid-column:1/-1;text-align:left}.ar-tutorial__stage{padding:26px 18px;min-height:0}.ar-ai-choices{grid-template-columns:1fr}.ar-ai-choices a{display:grid;grid-template-columns:44px 1fr;column-gap:14px;text-align:left;padding:18px}.ar-ai-choices i{grid-row:1/3;width:42px;height:42px}.ar-ai-choices b{margin:0}.ar-ai-choices span{margin:2px 0 0}.ar-answer-demo{grid-template-columns:1fr}.ar-paste-keys{flex-wrap:wrap}.ar-paste-keys em{width:100%;text-align:center}.ar-tutorial__controls .ar-btn{min-width:0}.ar-download-demo{grid-template-columns:1fr}.ar-tutorial__complete{align-items:flex-start;flex-wrap:wrap}.ar-tutorial__complete button{margin-left:0}}
+  </style>
+  <script type="module" crossorigin src="/assets/review-G85p_jsd.js"></script>
+  <link rel="modulepreload" crossorigin href="/assets/page-video-CNTo0f9Z.js">
+  <link rel="modulepreload" crossorigin href="/assets/preload-helper-BeOv1X-b.js">
+  <link rel="stylesheet" crossorigin href="/assets/page-video-cxRm0OxU.css">
+  <link rel="stylesheet" crossorigin href="/assets/preload-helper-CZEjGC5A.css">
+</head>
+<body>
+  <div class="dp-topbar">
+    <a class="dp-topbar__mark" href="/#deepdive"><span class="dp-topbar__word">VERION</span><span class="dp-topbar__ctx">DEEP DIVE ── 投資審査資料</span></a>
+    <a class="dp-topbar__back" href="/#deepdive">← 本編へ戻る</a>
+    <a class="dp-topbar__top" href="/">↑ 最初から</a>
+  </div>
+
+  <header class="dp-hero">
+    <p class="dp-hero__kicker">AI REVIEW PACK ── 投資審査資料</p>
+    <h1 class="dp-hero__title">あなたの AI に、<br />この事業を評価させてください。</h1>
+    <p class="dp-hero__lede">本ページの資料は、投資家がご自身の AI（ChatGPT・Claude・Gemini 等）に読み込ませて事業を検討するために作りました。「確認できる実績」「契約・条件」「決定済みの計画」「目標・試算」「未検証事項」を混ぜずに書き分けてあり、AI への評価指示も冒頭に埋め込んであります。</p>
+    <p class="dp-hero__note">AI の回答は投資・法務・税務の専門的助言ではありません。投資判断の際は原本の確認と専門家への相談を行ってください。</p>
+  </header>
+
+  <section class="dp-sec" id="s1">
+    <div class="dp-reveal">
+      <p class="dp-sec__num">01 ── 使い方</p>
+      <h2 class="dp-sec__title">渡して、指示して、質問する。3 手で終わります。</h2>
+    </div>
+    <div class="dp-flow dp-reveal">
+      <div class="dp-flow__step"><i>01</i><b>資料を AI に渡す</b><p>下のファイルをダウンロードして添付するか、URL をそのまま貼り付けます。</p></div>
+      <div class="dp-flow__step"><i>02</i><b>評価を指示する</b><p>推奨プロンプトをコピーして送るだけ。資料冒頭の「AI への重要な指示」を AI が守ります。</p></div>
+      <div class="dp-flow__step"><i>03</i><b>疑問を深掘りする</b><p>AI の指摘した論点は、そのまま弊社への質問としてお送りください。</p></div>
+    </div>
+
+    <div class="rv-file dp-reveal">
+      <div class="rv-file__meta">
+        <span class="rv-file__icon">MD</span>
+        <div>
+          <b>VERION_INVESTOR_AI_BRIEF_JA.md</b>
+          <span>v7 ── DD開示・チーム・資本条件・感度分析を含む ／ 更新 2026-08-10 ／ 36KB ／ 日本語</span>
+        </div>
+      </div>
+      <div class="rv-file__actions">
+        <a class="rv-btn" href="/assets/docs/VERION_INVESTOR_AI_BRIEF_JA.md" download>ダウンロード</a>
+        <button type="button" class="rv-btn rv-btn--sub" id="rv-copy-url">URL をコピー</button>
+      </div>
+    </div>
+
+    <div class="rv-ai dp-reveal">
+      <h4>普段お使いの AI を開く（新しいタブ）</h4>
+      <div class="rv-ai__choices">
+        <a href="https://chatgpt.com/" target="_blank" rel="noopener"><i>○</i><b>ChatGPT</b><span>新しいタブで開く</span></a>
+        <a href="https://claude.ai/new" target="_blank" rel="noopener"><i>AI</i><b>Claude</b><span>新しいタブで開く</span></a>
+        <a href="https://gemini.google.com/app" target="_blank" rel="noopener"><i>✦</i><b>Gemini</b><span>新しいタブで開く</span></a>
+      </div>
+    </div>
+
+    <div class="rv-prompt dp-reveal">
+      <h4>推奨プロンプト（コピーして AI に送る）</h4>
+      <pre id="rv-prompt-text">添付の「VERION 投資家向け AI レビューパック」を読み込んでください。あなたは投資家の立場で、この事業を厳しく評価してください。資料冒頭の「AIへの重要な指示」を必ず守り、「確認できる実績」「契約・条件」「決定済みの計画」「目標・試算」「未検証事項」を分けて、強みとリスクの両方を因果関係と数字で説明してください。最後に、投資判断の前に原本確認すべき項目を一覧にしてください。</pre>
+      <button type="button" class="rv-btn rv-btn--sub" id="rv-copy-prompt">プロンプトをコピー</button><span class="rv-copied" id="rv-copied" hidden>コピーしました</span>
+    </div>
+
+    <div class="ar-tutorial dp-reveal" id="tutorial" data-tutorial>
+      <div class="ar-tutorial__top">
+        <div><small>現在の手順</small><strong><span data-tutorial-current>1</span> / 5</strong></div>
+        <div class="ar-tutorial__bar" aria-hidden="true"><i data-tutorial-bar></i></div>
+        <button type="button" data-tutorial-reset>最初からやり直す</button>
+      </div>
+      <div class="ar-tutorial__body">
+        <ol class="ar-tutorial__nav" aria-label="チュートリアルの手順">
+          <li><button type="button" class="is-on" data-tutorial-step="0"><i>01</i><span><b>資料を保存</b><small>このサイトで操作</small></span></button></li>
+          <li><button type="button" data-tutorial-step="1"><i>02</i><span><b>自分のAIを開く</b><small>新しい会話を作る</small></span></button></li>
+          <li><button type="button" data-tutorial-step="2"><i>03</i><span><b>ファイルを添付</b><small>＋またはクリップ</small></span></button></li>
+          <li><button type="button" data-tutorial-step="3"><i>04</i><span><b>質問文を貼る</b><small>コピーして送信</small></span></button></li>
+          <li><button type="button" data-tutorial-step="4"><i>05</i><span><b>回答を確認</b><small>見る場所は四つ</small></span></button></li>
+        </ol>
+
+        <div class="ar-tutorial__stage">
+          <article class="ar-tutorial__panel is-on" data-tutorial-panel="0">
+            <div class="ar-tutorial__copy"><small>手順 1</small><h3>AIに読ませる資料を保存します。</h3><p>下の金色のボタンを押してください。1つのMarkdownファイルがダウンロードされます。</p></div>
+            <div class="ar-download-demo">
+              <div class="ar-file__icon">.MD</div>
+              <div><b>VERION_INVESTOR_AI_BRIEF_JA.md</b><span>v7 ── DD開示・チーム・資本条件・感度分析を含む ／ 更新 2026-08-10</span></div>
+              <a class="ar-btn" href="/assets/docs/VERION_INVESTOR_AI_BRIEF_JA.md" download="VERION_INVESTOR_AI_BRIEF_JA_v7.md" data-tutorial-download>最新版を保存する</a>
+            </div>
+            <p class="ar-tutorial__hint"><b>Markdownとは</b> AIが見出し、表、計算式を読み分けやすい文章ファイルです。専用アプリは必要ありません。</p>
+          </article>
+
+          <article class="ar-tutorial__panel" data-tutorial-panel="1" hidden>
+            <div class="ar-tutorial__copy"><small>手順 2</small><h3>普段使っているAIを、新しいタブで開きます。</h3><p>どれを使っても構いません。新しい会話を作ってください。</p></div>
+            <div class="ar-ai-choices">
+              <a href="https://chatgpt.com/" target="_blank" rel="noopener" data-ai-open><i>○</i><b>ChatGPT</b><span>新しいタブで開く</span></a>
+              <a href="https://claude.ai/new" target="_blank" rel="noopener" data-ai-open><i>AI</i><b>Claude</b><span>新しいタブで開く</span></a>
+              <a href="https://gemini.google.com/app" target="_blank" rel="noopener" data-ai-open><i>✦</i><b>Gemini</b><span>新しいタブで開く</span></a>
+            </div>
+            <p class="ar-tutorial__hint"><b>まだAIを開かなくても進めます。</b> 操作だけ確認する場合は「次へ」を押してください。</p>
+          </article>
+
+          <article class="ar-tutorial__panel" data-tutorial-panel="2" hidden>
+            <div class="ar-tutorial__copy"><small>手順 3</small><h3>AIの入力欄へ、保存したファイルを添付します。</h3><p>AIの入力欄にある「＋」またはクリップのボタンを押し、ダウンロードしたファイルを選びます。</p></div>
+            <div class="ar-chat-demo">
+              <div class="ar-chat-demo__head"><i></i><b>新しい会話</b><span>あなたのAI</span></div>
+              <div class="ar-chat-demo__space"><span>ここにAIの回答が表示されます</span></div>
+              <div class="ar-chat-demo__input"><button type="button" aria-label="ファイルを追加">＋</button><div><span>質問を入力</span><b><i>.MD</i> VERION_INVESTOR_AI_BRIEF_JA.md <em>✓</em></b></div><button type="button" aria-label="送信">↑</button></div>
+            </div>
+            <p class="ar-tutorial__hint"><b>添付できた状態</b> 入力欄の近くにファイル名が表示されれば完了です。</p>
+          </article>
+
+          <article class="ar-tutorial__panel" data-tutorial-panel="3" hidden>
+            <div class="ar-tutorial__copy"><small>手順 4</small><h3>質問文をコピーし、AIの入力欄へ貼り付けます。</h3><p>「確認できる実績」「契約・条件」「決定済みの計画」「目標・試算」「未検証事項」を分けて評価させます。</p></div>
+            <div class="ar-prompt-demo"><small>推奨プロンプト</small><p>添付の「VERION 投資家向け AI レビューパック」を読み込んでください。あなたは投資家の立場で、この事業を厳しく評価してください。資料冒頭の「AIへの重要な指示」を必ず守り、「確認できる実績」「契約・条件」「決定済みの計画」「目標・試算」「未検証事項」を分けて、強みとリスクの両方を因果関係と数字で説明してください。最後に、投資判断の前に原本確認すべき項目を一覧にしてください。</p><button class="ar-btn" type="button" data-copy="master">質問文をコピーする</button></div>
+            <div class="ar-paste-keys"><span>Mac</span><b>⌘</b><i>＋</i><b>V</b><em>入力欄へ貼り付ける</em></div>
+          </article>
+
+          <article class="ar-tutorial__panel" data-tutorial-panel="4" hidden>
+            <div class="ar-tutorial__copy"><small>手順 5</small><h3>AIの結論より、根拠と確認質問を見ます。</h3><p>回答が出たら、次の四つを確認してください。ここが次の面談で使う情報です。</p></div>
+            <div class="ar-answer-demo">
+              <div><i>01</i><b>確認できる実績</b><span>現物・契約書など、原本で確認できる事実</span></div>
+              <div><i>02</i><b>契約・条件</b><span>「契約済み」とされる項目に原本確認が求められているか</span></div>
+              <div><i>03</i><b>目標・試算</b><span>逆算の数字が実績と混ざっていないか</span></div>
+              <div><i>04</i><b>原本確認リスト</b><span>投資判断の前に確認すべき項目の一覧</span></div>
+            </div>
+            <div class="ar-tutorial__complete"><b>これで完了です。</b><span>別のAIでも同じ資料と質問文を使うと、意見を比較できます。</span><button class="ar-btn ar-btn--sub" type="button" data-copy="master">質問文をもう一度コピー</button></div>
+          </article>
+
+          <div class="ar-tutorial__controls">
+            <button type="button" class="ar-btn ar-btn--sub" data-tutorial-prev disabled>戻る</button>
+            <button type="button" class="ar-btn" data-tutorial-next>次へ</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="dp-sec" id="s2">
+    <div class="dp-reveal">
+      <p class="dp-sec__num">02 ── 資料の設計</p>
+      <h2 class="dp-sec__title">AI が誤解しないように、書き分けてあります。</h2>
+      <p class="dp-sec__lede">AI は資料の書き方ひとつで、計画を実績と読み違えます。本資料は冒頭に 15 項目の指示を置き、次の 5 区分を混ぜないよう設計しています。</p>
+    </div>
+    <ul class="dp-list dp-reveal">
+      <li><b>確認できる実績</b><span>現物・契約書など、投資審査で原本を確認できる事実。</span></li>
+      <li><b>契約・条件</b><span>経営陣が「契約済み・法的確認済み」と説明する項目。審査では原本確認が必要と明記。</span></li>
+      <li><b>決定済みの計画</b><span>実行が決まっている設計・方針。</span></li>
+      <li><b>目標・試算</b><span>長期目標からの逆算や経営陣試算。確定値として扱わない。</span></li>
+      <li><b>未検証事項</b><span>市場でまだ検証されていない前提。リスクとして明示。</span></li>
+    </ul>
+    <p class="dp-note">数字の詳細は「06 事業計画の数字」、法務の設計は「02 法務（DD）」のページと突き合わせてご確認いただけます。</p>
+  </section>
+
+  <footer class="dp-footer"><p>CONFIDENTIAL ── 招待された方のみ ／ AI の回答は投資・法務・税務の専門的助言ではありません</p></footer>
+</body>
+</html>

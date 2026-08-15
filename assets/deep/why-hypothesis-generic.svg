@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 1080" role="img" aria-labelledby="title desc">
+  <title id="title">なぜ今かを示す抽象図</title>
+  <desc id="desc">余暇、日本のコンテンツ、ファン行動という三つの仮説を表す抽象的な図</desc>
+  <rect width="960" height="1080" fill="#08090b"/>
+  <g fill="none" stroke="#b58a3c" stroke-width="3" opacity=".9">
+    <circle cx="480" cy="540" r="270"/>
+    <circle cx="480" cy="540" r="180" opacity=".55"/>
+    <path d="M480 110v860M50 540h860" opacity=".22"/>
+  </g>
+  <g font-family="Arial, sans-serif" text-anchor="middle">
+    <text x="480" y="500" fill="#e8e6df" font-size="42" letter-spacing="8">THREE</text>
+    <text x="480" y="560" fill="#d5ad62" font-size="70" font-weight="700">HYPOTHESES</text>
+    <text x="480" y="625" fill="#8e9299" font-size="28" letter-spacing="4">LEISURE · JAPAN · FANS</text>
+  </g>
+  <g fill="#66c49a">
+    <circle cx="480" cy="220" r="12"/>
+    <circle cx="757" cy="700" r="12"/>
+    <circle cx="203" cy="700" r="12"/>
+  </g>
+</svg>

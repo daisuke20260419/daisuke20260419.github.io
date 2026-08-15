@@ -1,0 +1,1 @@
+import{b as e}from"./page-video-CNTo0f9Z.js";import{genAr as t,genEn as n,genZh as r,t as i}from"./review-gen-CwnjTXHS.js";var a,o,s;e((()=>{i(),a={...n},o={...r},s={...t},Object.assign(a,{最初から:`Start over`}),Object.assign(o,{最初から:`从头开始`})}))();export{s as ar,a as en,o as zh};

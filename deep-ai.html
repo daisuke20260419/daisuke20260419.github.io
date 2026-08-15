@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <title>AI 戦略 ── VERION 事業計画</title>
+  <script type="module" crossorigin src="/assets/ai-DpMDnbJF.js"></script>
+  <link rel="modulepreload" crossorigin href="/assets/page-video-CNTo0f9Z.js">
+  <link rel="modulepreload" crossorigin href="/assets/preload-helper-BeOv1X-b.js">
+  <link rel="modulepreload" crossorigin href="/assets/deep-mOkU-bvI.js">
+  <link rel="stylesheet" crossorigin href="/assets/page-video-cxRm0OxU.css">
+  <link rel="stylesheet" crossorigin href="/assets/preload-helper-CZEjGC5A.css">
+</head>
+<body>
+  <div class="dp-topbar">
+    <a class="dp-topbar__mark" href="/#deepdive"><span class="dp-topbar__word">VERION</span><span class="dp-topbar__ctx">DEEP DIVE ── 07 AI 戦略</span></a>
+    <a class="dp-topbar__back" href="/#deepdive">← 本編へ戻る</a>
+    <a class="dp-topbar__top" href="/">↑ 最初から</a>
+  </div>
+
+  <header class="dp-hero">
+    <p class="dp-hero__kicker">AI STRATEGY ── データが、面白さを設計する</p>
+    <h1 class="dp-hero__title">AI でアニメを作る会社は増えます。<br />「何がウケるか」の DB を持って作れるのは、<br />私たちだけです。</h1>
+    <p class="dp-hero__lede">GPU に投資し、外部 API に縛られない自由な独自 AI を持つ。ユーザーの遊びから「演出の人気 DB」が育ち、AI がその DB から理論的に面白いアニメを設計する——スクロールで、この循環をご覧ください。</p>
+    <p class="dp-hero__note">投資規模・時期は調達の進捗に応じて段階判断します（本ページは方針・構想です）。</p>
+  </header>
+
+  <!-- ── スクロール・シネマ: AI 戦略の 5 幕 ── -->
+  <div class="dstory" id="aistory">
+    <div class="dstory__stage">
+      <svg id="ai-svg" viewBox="0 0 1200 640" preserveAspectRatio="xMidYMid meet" aria-hidden="true"></svg>
+      <div class="dstory__cap">
+        <span class="dstory__chip" id="ai-chip"></span>
+        <p id="ai-caption"></p>
+        <span class="dstory__sub" id="ai-sub"></span>
+      </div>
+    </div>
+    <div class="dstory__track" aria-hidden="true"></div>
+  </div>
+
+  <style>
+    .aiops { border: 1px solid var(--c-line); border-radius: 8px; overflow: hidden; background: #08080b; font-family: ui-monospace, "SF Mono", Menlo, monospace; margin-top: 34px; }
+    .aiops__bar { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 10px 14px; border-bottom: 1px solid var(--c-line); background: rgba(201, 163, 92, 0.04); font-size: 10px; letter-spacing: 0.14em; }
+    .aiops__bar b { color: var(--c-text); font-weight: 700; letter-spacing: 0.3em; }
+    .aiops__on { display: flex; align-items: center; gap: 7px; color: #7fae7f; }
+    .aiops__on i { width: 6px; height: 6px; border-radius: 50%; background: #7fae7f; animation: vlive-pulse 1.6s ease-in-out infinite; }
+    .aiops__bar span { color: var(--c-text-2); font-variant-numeric: tabular-nums; }
+    .aiops__grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 1px; background: var(--c-line); }
+    .aip { background: #0b0b10; padding: 11px 13px; min-width: 0; }
+    .aip--in { grid-column: span 4; } .aip--db { grid-column: span 4; } .aip--gpu { grid-column: span 4; }
+    .aip--pipe { grid-column: span 12; } .aip--log { grid-column: span 7; } .aip--ana { grid-column: span 5; }
+    .aip__h { font-size: 8.5px; letter-spacing: 0.26em; color: #c9a35c; margin: 0 0 9px; display: flex; justify-content: space-between; }
+    .aip__h em { font-style: normal; color: var(--c-text-3); letter-spacing: 0.1em; }
+    .aip__feed { display: flex; flex-direction: column-reverse; gap: 4px; height: 118px; overflow: hidden; }
+    .aip__feed p { margin: 0; font-size: 9.5px; color: var(--c-text-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; animation: vlin 0.35s ease-out; }
+    .aip__feed p b { color: #7fae7f; font-weight: 400; margin-right: 6px; }
+    .aip__big { font-size: 22px; color: var(--c-text); font-weight: 700; font-variant-numeric: tabular-nums; margin: 0 0 8px; }
+    .aip__big small { font-size: 9px; color: var(--c-text-3); font-weight: 400; margin-left: 6px; letter-spacing: 0.14em; }
+    .aip__row { display: flex; align-items: center; gap: 8px; font-size: 9.5px; color: var(--c-text-2); margin-bottom: 6px; }
+    .aip__row i { flex: none; width: 86px; letter-spacing: 0.06em; font-style: normal; }
+    .aip__row u { text-decoration: none; color: var(--c-text); font-variant-numeric: tabular-nums; margin-left: auto; }
+    .aip__row s { flex: 1; height: 3px; background: rgba(255, 255, 255, 0.07); border-radius: 2px; overflow: hidden; text-decoration: none; }
+    .aip__row s b { display: block; height: 100%; background: linear-gradient(90deg, #b98f4e, #e6c98a); width: 50%; transition: width 0.6s; }
+    .aip__gpus { display: grid; grid-template-columns: repeat(4, 1fr); gap: 5px; margin-bottom: 9px; }
+    .aip__gpu { border: 1px solid var(--c-line-2); border-radius: 4px; padding: 6px 7px; font-size: 8.5px; color: var(--c-text-3); }
+    .aip__gpu b { display: block; font-size: 11px; color: #7fae7f; font-weight: 600; font-variant-numeric: tabular-nums; transition: color 0.4s; }
+    .aip__gpu.is-hot b { color: #e6c98a; }
+    .aip__pipe svg { width: 100%; height: auto; display: block; }
+    .aip__log { display: flex; flex-direction: column-reverse; gap: 4px; height: 132px; overflow: hidden; }
+    .aip__log p { margin: 0; font-size: 9.5px; color: var(--c-text-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; animation: vlin 0.35s ease-out; }
+    .aip__log p b { color: #c9a35c; font-weight: 400; margin-right: 7px; }
+    .aip__log p em { font-style: normal; color: var(--c-text-3); margin-right: 7px; }
+    .aip__spark { margin-bottom: 4px; }
+    .aip__spark svg { width: 100%; height: 44px; display: block; }
+    .aip__spark p { margin: 2px 0 6px; font-size: 8.5px; letter-spacing: 0.14em; color: var(--c-text-3); display: flex; justify-content: space-between; }
+    .aip__spark p u { text-decoration: none; color: var(--c-text); font-variant-numeric: tabular-nums; }
+    @media (max-width: 760px) { .aip--in, .aip--db, .aip--gpu { grid-column: span 12; } .aip--log, .aip--ana { grid-column: span 12; } }
+  </style>
+
+  <section class="dp-sec" id="live">
+    <div class="dp-reveal">
+      <p class="dp-sec__num">稼働イメージ ── 24 時間、止まらない</p>
+      <h2 class="dp-sec__title">ユーザーの遊びが流れ込み、DB が育ち、<br />AI が作り続ける。</h2>
+      <p class="dp-sec__lede">VERION の AI は「たまに使う道具」ではなく、24 時間動き続ける生産ラインです。入力（ユーザーの動き）→ 整理（ファンダム DB）→ 出力（クイズ・アニメ・演出・最適化）の循環が回り続ける様子を、稼働イメージでご覧ください。</p>
+    </div>
+    <div class="dp-reveal">
+      <div class="aiops" id="aiops">
+        <div class="aiops__bar">
+          <b>VERION AI</b>
+          <span class="aiops__on"><i></i>稼働中 ── 24/7</span>
+          <span>UPTIME <u id="aiops-up" style="text-decoration:none;color:#f2f2f4">134日 07:12:33</u></span>
+          <span id="aiops-clock">--:--:-- JST</span>
+        </div>
+        <div class="aiops__grid">
+          <div class="aip aip--in">
+            <p class="aip__h">INPUT ── ユーザーの動き<em id="aiops-epm">1,482 件/分</em></p>
+            <div class="aip__feed" id="aiops-feed"></div>
+          </div>
+          <div class="aip aip--db">
+            <p class="aip__h">DB ── ファンダム DB<em>整理・分類</em></p>
+            <p class="aip__big" id="aiops-rec">2,412,086<small>RECORDS</small></p>
+            <p class="aip__row"><i>演出タグ</i><s><b style="width:72%"></b></s><u>124,081</u></p>
+            <p class="aip__row"><i>キャラ相関</i><s><b style="width:58%"></b></s><u>81,027</u></p>
+            <p class="aip__row"><i>国 × IP 熱量</i><s><b style="width:44%"></b></s><u>39,114</u></p>
+            <p class="aip__row"><i>難易度較正</i><s><b style="width:83%"></b></s><u>220,516</u></p>
+          </div>
+          <div class="aip aip--gpu">
+            <p class="aip__h">GPU CLUSTER<em id="aiops-util">UTIL 91%</em></p>
+            <div class="aip__gpus" id="aiops-gpus"></div>
+            <p class="aip__row"><i>生成キュー</i><s><b style="width:64%" id="aiops-queue"></b></s><u id="aiops-queuen">318</u></p>
+          </div>
+          <div class="aip aip--pipe">
+            <p class="aip__h">PIPELINE ── 収集 → 整理 → 生成<em>EVERY ACTION TRACED</em></p>
+            <svg viewBox="0 0 1040 218" aria-hidden="true">
+              <rect x="10" y="76" width="130" height="56" rx="6" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.18)"/>
+              <text x="75" y="100" text-anchor="middle" font-size="12" fill="#f2f2f4" font-weight="600">ユーザーの遊び</text>
+              <text x="75" y="118" text-anchor="middle" font-size="8.5" fill="#9a9aa3">クイズ・予測・コメント</text>
+              <rect x="230" y="76" width="110" height="56" rx="6" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.18)"/>
+              <text x="285" y="100" text-anchor="middle" font-size="12" fill="#f2f2f4" font-weight="600">収集</text>
+              <text x="285" y="118" text-anchor="middle" font-size="8.5" fill="#9a9aa3">毎秒・全行動</text>
+              <rect x="430" y="66" width="150" height="76" rx="6" fill="rgba(201,163,92,0.08)" stroke="#c9a35c" stroke-width="1.4"/>
+              <text x="505" y="94" text-anchor="middle" font-size="12.5" fill="#f2f2f4" font-weight="700">演出の人気 DB</text>
+              <text x="505" y="112" text-anchor="middle" font-size="8.5" fill="#c9a35c">何がウケるかの構造データ</text>
+              <text x="505" y="128" text-anchor="middle" font-size="8.5" fill="#9a9aa3">世界に、ここだけ</text>
+              <rect x="670" y="76" width="110" height="56" rx="6" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.18)"/>
+              <text x="725" y="100" text-anchor="middle" font-size="12" fill="#f2f2f4" font-weight="600">AI CORE</text>
+              <text x="725" y="118" text-anchor="middle" font-size="8.5" fill="#9a9aa3">自社 GPU・独自モデル</text>
+              <rect x="880" y="8" width="150" height="40" rx="5" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.16)"/>
+              <text x="955" y="32" text-anchor="middle" font-size="10.5" fill="#f2f2f4">クイズ生成</text>
+              <rect x="880" y="58" width="150" height="40" rx="5" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.16)"/>
+              <text x="955" y="82" text-anchor="middle" font-size="10.5" fill="#f2f2f4">アニメ生成</text>
+              <rect x="880" y="108" width="150" height="40" rx="5" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.16)"/>
+              <text x="955" y="132" text-anchor="middle" font-size="10.5" fill="#f2f2f4">演出設計</text>
+              <rect x="880" y="158" width="150" height="40" rx="5" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.16)"/>
+              <text x="955" y="182" text-anchor="middle" font-size="10.5" fill="#f2f2f4">予測・広告の最適化</text>
+              <path id="aiop-p1" d="M 140 104 L 230 104" stroke="rgba(201,163,92,0.5)" stroke-width="1.6" fill="none"/>
+              <path id="aiop-p2" d="M 340 104 L 430 104" stroke="rgba(201,163,92,0.5)" stroke-width="1.6" fill="none"/>
+              <path id="aiop-p3" d="M 580 104 L 670 104" stroke="rgba(201,163,92,0.5)" stroke-width="1.6" fill="none"/>
+              <path id="aiop-p4" d="M 780 96 C 830 70 850 40 880 30" stroke="rgba(201,163,92,0.45)" stroke-width="1.4" fill="none"/>
+              <path id="aiop-p5" d="M 780 100 C 830 92 850 82 880 78" stroke="rgba(201,163,92,0.45)" stroke-width="1.4" fill="none"/>
+              <path id="aiop-p6" d="M 780 110 C 830 116 850 124 880 128" stroke="rgba(201,163,92,0.45)" stroke-width="1.4" fill="none"/>
+              <path id="aiop-p7" d="M 780 114 C 830 140 850 168 880 178" stroke="rgba(201,163,92,0.45)" stroke-width="1.4" fill="none"/>
+              <path id="aiop-p8" d="M 955 198 C 955 214 505 216 505 142" stroke="rgba(127,174,127,0.35)" stroke-width="1.2" fill="none" stroke-dasharray="3 5"/>
+              <g>
+                <circle r="3.2" fill="#e6c98a"><animateMotion dur="2.6s" repeatCount="indefinite"><mpath href="#aiop-p1"/></animateMotion></circle>
+                <circle r="3.2" fill="#e6c98a"><animateMotion dur="2.6s" begin="0.9s" repeatCount="indefinite"><mpath href="#aiop-p2"/></animateMotion></circle>
+                <circle r="3.2" fill="#e6c98a"><animateMotion dur="2.6s" begin="1.8s" repeatCount="indefinite"><mpath href="#aiop-p3"/></animateMotion></circle>
+                <circle r="2.6" fill="#e6c98a"><animateMotion dur="2.2s" begin="0.4s" repeatCount="indefinite"><mpath href="#aiop-p4"/></animateMotion></circle>
+                <circle r="2.6" fill="#e6c98a"><animateMotion dur="2.2s" begin="1.1s" repeatCount="indefinite"><mpath href="#aiop-p5"/></animateMotion></circle>
+                <circle r="2.6" fill="#e6c98a"><animateMotion dur="2.2s" begin="1.7s" repeatCount="indefinite"><mpath href="#aiop-p6"/></animateMotion></circle>
+                <circle r="2.6" fill="#e6c98a"><animateMotion dur="2.2s" begin="0.2s" repeatCount="indefinite"><mpath href="#aiop-p7"/></animateMotion></circle>
+                <circle r="2.4" fill="#7fae7f"><animateMotion dur="3.4s" begin="0.6s" repeatCount="indefinite"><mpath href="#aiop-p8"/></animateMotion></circle>
+              </g>
+              <text x="505" y="214" text-anchor="middle" font-size="8.5" fill="#5c5c66">出力への反応も、また DB へ戻る（緑の点線）</text>
+            </svg>
+          </div>
+          <div class="aip aip--log">
+            <p class="aip__h">OUTPUT ── 生成ログ<em>LIVE STREAM</em></p>
+            <div class="aip__log" id="aiops-log"></div>
+          </div>
+          <div class="aip aip--ana">
+            <p class="aip__h">ANALYTICS<em>累積</em></p>
+            <div class="aip__spark"><svg viewBox="0 0 220 44" preserveAspectRatio="none"><polyline id="aiops-sp1" fill="none" stroke="#e6c98a" stroke-width="1.6" points=""/></svg><p>生成クイズ 累計<u id="aiops-sq">128,431</u></p></div>
+            <div class="aip__spark"><svg viewBox="0 0 220 44" preserveAspectRatio="none"><polyline id="aiops-sp2" fill="none" stroke="#7fae7f" stroke-width="1.6" points=""/></svg><p>DB レコード<u id="aiops-sr">2.41M</u></p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p class="dp-note">この画面は稼働の雰囲気を伝えるイメージ（デモ表示）です。表示中の数値・ログは実データではありません。</p>
+  </section>
+
+
+  <section class="dp-sec" id="s1">
+    <div class="dp-reveal">
+      <p class="dp-sec__num">補足 01 ── 投資の考え方</p>
+      <h2 class="dp-sec__title">GPU は費用ではなく、生産設備です。</h2>
+      <div class="dp-sec__body">
+        <p>投資規模は<b>数千万〜億円単位</b>を想定します。得られるのは、外部 API の制約・料金・検閲に縛られない<b>「自由な AI」</b>。基盤モデルの進歩により、独自 AI の構築は「資金を投じれば到達できる領域」になったと認識しています。人を増やす代わりに計算資源へ投資する——だから組織は<b>少数精鋭のまま</b>拡大できます。</p>
+      </div>
+    </div>
+    <div class="dp-stats dp-reveal">
+      <div class="dp-stat"><b>数千万〜億円<small>単位</small></b><span>GPU（計算資源）への投資想定。価値の残る資産に資金を寝かせる方針の一部です。</span></div>
+      <div class="dp-stat"><b>24<small>時間</small></b><span>クイズの自動生成。全 IP・全話数・多言語に、人手の限界なくお題を供給します。</span></div>
+      <div class="dp-stat"><b>少数精鋭</b><span>制作・運営・多言語化を AI が担い、人件費に薄く広く使わない経営を可能にします。</span></div>
+    </div>
+  </section>
+
+  <section class="dp-sec" id="s2">
+    <div class="dp-reveal">
+      <p class="dp-sec__num">補足 02 ── 独占データの堀</p>
+      <h2 class="dp-sec__title">演出の人気 DB は、遊び場の運営者にしか作れません。</h2>
+      <div class="dp-sec__body">
+        <p>クイズの熱量・予測の張り方・カードの人気——世界のファンが「どの作品の、どのシーンの、どの演出」に反応するかは、プラットフォームが遊ばれるほど蓄積されます。この DB を参照して、独自 AI が「ウケる演出」を理論的に組み立てる。<b>勘ではなく、データでつくる面白さ</b>です。</p>
+        <p>そして日本では、インディーズ漫画という原作が<b>常に生まれ続けます</b>。それ自体が日本の文化であり、構造的な強みです。言語・商習慣・信頼の面で獲得交渉は日本企業に優位があり、海外企業には踏み込みにくい領域——尽きない原石を、データが磨き、AI がアニメにします。</p>
+      </div>
+    </div>
+    <p class="dp-quote dp-reveal">制作できる会社は、増える。<br />私たちは、ファンの反応から、作る作品と演出を選ぶ。</p>
+  </section>
+
+  <div class="dp-next"><a href="/deep-product.html#s9"><div><small>RELATED ── 01</small><b>プロダクト ── AI 戦略を含む設計の全体へ。</b></div><span class="arrow">→</span></a></div>
+  <footer class="dp-footer"><p>CONFIDENTIAL ── 招待された方のみ ／ 記載の数値・時期には目標・構想を含みます</p></footer>
+
+</body>
+</html>

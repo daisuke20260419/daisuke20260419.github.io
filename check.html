@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex, nofollow" />
+<title>VERION ── 表示チェック</title>
+<style>
+  body { margin:0; padding:28px 20px 48px; background:#0b0b10; color:#e8e6e2;
+         font-family:"Helvetica Neue",Helvetica,Arial,"Yu Gothic","Hiragino Sans",sans-serif; }
+  h1 { font-size:17px; letter-spacing:.16em; color:#e6c98a; margin:0 0 4px; font-weight:700; }
+  p.lead { font-size:12.5px; color:#9a999e; margin:0 0 22px; line-height:1.8; }
+  table { border-collapse:collapse; width:100%; max-width:760px; }
+  td { padding:11px 10px; border-bottom:1px solid rgba(255,255,255,.1); font-size:13px; vertical-align:top; }
+  td.k { color:#9a999e; width:190px; white-space:nowrap; }
+  td.v { font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; word-break:break-all; }
+  .ok  { color:#7fbf8a; font-weight:700; }
+  .ng  { color:#e0776b; font-weight:700; }
+  .warn{ color:#e6c98a; font-weight:700; }
+  #shot { margin-top:26px; max-width:760px; }
+  #shot h2 { font-size:12px; letter-spacing:.2em; color:#e6c98a; margin:0 0 10px; }
+  #cv { width:100%; max-width:420px; height:120px; display:block; border:1px solid rgba(255,255,255,.16); border-radius:4px; }
+  .note { margin-top:22px; font-size:11.5px; color:#78777a; line-height:1.9; max-width:760px; }
+</style>
+</head>
+<body>
+<h1>VERION ── 表示チェック</h1>
+<p class="lead">この画面をそのままスクリーンショットして送ってください。原因が特定できます。</p>
+<table id="t"></table>
+
+<div id="shot">
+  <h2>3D 描画のテスト</h2>
+  <canvas id="cv"></canvas>
+  <p class="note" id="glnote"></p>
+</div>
+
+<p class="note">
+  このページは診断用です。サイト本体の内容は含みません。
+</p>
+
+<script>
+(function () {
+  const rows = [];
+  const add = (k, v, cls) => rows.push(
+    '<tr><td class="k">' + k + '</td><td class="v ' + (cls || '') + '">' + v + '</td></tr>');
+
+  // ── ブラウザ
+  add('ブラウザ', navigator.userAgent);
+  add('画面', screen.width + ' × ' + screen.height + '  /  ウィンドウ ' +
+      window.innerWidth + ' × ' + window.innerHeight + '  /  倍率 ' + (window.devicePixelRatio || 1));
+  add('言語', navigator.language + '  /  ' + (navigator.languages || []).join(', '));
+
+  // ── WebGL（回廊の描画に必要）
+  let glLine = '', glCls = '', glDetail = '';
+  try {
+    const c = document.createElement('canvas');
+    const gl = c.getContext('webgl2') || c.getContext('webgl') || c.getContext('experimental-webgl');
+    if (gl) {
+      const dbg = gl.getExtension('WEBGL_debug_renderer_info');
+      glDetail = dbg ? String(gl.getParameter(dbg.UNMASKED_RENDERER_WEBGL)) : String(gl.getParameter(gl.RENDERER));
+      glLine = '使える'; glCls = 'ok';
+    } else { glLine = '使えない ← 回廊が出ない原因'; glCls = 'ng'; }
+  } catch (e) { glLine = '使えない（' + e + '）'; glCls = 'ng'; }
+  add('WebGL（3D描画）', glLine, glCls);
+  if (glDetail) add('　└ 描画装置', glDetail);
+
+  // ── 実際に色を塗ってみる
+  try {
+    const cv = document.getElementById('cv');
+    const gl2 = cv.getContext('webgl2') || cv.getContext('webgl');
+    if (gl2) {
+      gl2.clearColor(0.13, 0.10, 0.04, 1); gl2.clear(gl2.COLOR_BUFFER_BIT);
+      document.getElementById('glnote').textContent = '↑ ここが濃い茶色に塗られていれば 3D 描画は動いています。真っ黒のままなら動いていません。';
+    } else {
+      cv.style.background = '#1a1a20';
+      document.getElementById('glnote').textContent = '↑ 3D 描画を開始できませんでした。';
+    }
+  } catch (e) {
+    document.getElementById('glnote').textContent = '↑ 3D 描画でエラー: ' + e;
+  }
+
+  // ── ストレージ（パスコードの記憶に必要）
+  try {
+    sessionStorage.setItem('__t', '1'); sessionStorage.removeItem('__t');
+    add('セッション記憶', '使える', 'ok');
+  } catch (e) { add('セッション記憶', '使えない ← パスコードを覚えられない', 'ng'); }
+
+  // ── 暗号API（パスコード照合に必要）
+  add('暗号API（照合用）',
+      (window.crypto && window.crypto.subtle) ? '使える' : '使えない ← パスコードを判定できない',
+      (window.crypto && window.crypto.subtle) ? 'ok' : 'ng');
+  add('安全な接続', window.isSecureContext ? 'HTTPS' : 'HTTPS ではない ← 要確認',
+      window.isSecureContext ? 'ok' : 'ng');
+
+  document.getElementById('t').innerHTML = rows.join('');
+
+  // ── サイトの実ファイルが届くか
+  const probes = [
+    ['トップページ', '/index.html'],
+    ['本体スクリプト', '/'],
+    ['セル画（画像）', '/assets/cel/cel07.jpg'],
+    ['書体ファイル', '/fonts/geist-latin.woff2'],
+    ['ピッチ資料 PDF', '/assets/deck/VERION_Pitch_JA.pdf'],
+  ];
+  probes.forEach(function (pr) {
+    const label = pr[0]; let url = pr[1];
+    const done = (txt, cls) => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = '<td class="k">' + label + '</td><td class="v ' + cls + '">' + txt + '</td>';
+      document.getElementById('t').appendChild(tr);
+    };
+    if (label === '本体スクリプト') {
+      // index.html を読んで実際の JS 名を拾い、それを取りに行く
+      fetch('/index.html', { cache: 'no-store' })
+        .then(r => r.text())
+        .then(html => {
+          const m = html.match(/assets\/main-[A-Za-z0-9_-]+\.js/);
+          if (!m) { done('見つからない', 'ng'); return; }
+          return fetch('/' + m[0], { cache: 'no-store' })
+            .then(r => done(r.ok ? '届く（' + m[0].split('/').pop() + '）' : '届かない ' + r.status, r.ok ? 'ok' : 'ng'));
+        })
+        .catch(e => done('取得エラー: ' + e, 'ng'));
+      return;
+    }
+    fetch(url, { method: 'GET', cache: 'no-store' })
+      .then(r => done(r.ok ? '届く' : '届かない（' + r.status + '）', r.ok ? 'ok' : 'ng'))
+      .catch(e => done('取得エラー: ' + e, 'ng'));
+  });
+})();
+</script>
+</body>
+</html>

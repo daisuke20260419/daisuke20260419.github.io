@@ -1,0 +1,1134 @@
+<!doctype html>
+<html lang="ja" data-fs="m">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow, noarchive, noimageindex">
+<meta name="verion-site-version" content="7.0.0">
+<title>VERION — 事業計画</title>
+<link rel="preload" href="/fonts/geist-latin.woff2" as="font" type="font/woff2" crossorigin>
+<meta name="theme-color" content="#070708">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+
+<!-- ── 表示の安全網 ──────────────────────────────────────────────────
+     本体は module なので、読めない・落ちる環境では 1 行も走らない。
+     この script は通常スクリプトなので必ず走り、次の三つを引き受ける。
+       1. 起きた失敗を記録する（本体が動いていれば本体も同じ箱に積む）
+       2. 一定時間たっても回廊が立ち上がらなければ、文字だけのヒーローへ倒す
+       3. それでも動いていなければ、何が起きたかを画面に出す（報告できる形にする）
+     URL に #diag を付けると、正常時でも 3 の記録を開ける。
+─────────────────────────────────────────────────────────────────── -->
+<script>
+(function () {
+  var errs = (window.__verionErrors = window.__verionErrors || [])
+  var assets = []
+
+  window.addEventListener('error', function (e) {
+    // 画像・書体などの取得失敗は本体の停止要因ではないので別に積む
+    if (e.target && e.target !== window && e.target.tagName) {
+      if (assets.length < 6) assets.push(e.target.tagName + ' ' + (e.target.src || e.target.href || ''))
+      return
+    }
+    if (errs.length < 8) errs.push('error: ' + ((e && e.message) || 'unknown'))
+  }, true)
+
+  window.addEventListener('unhandledrejection', function (e) {
+    var r = e && e.reason
+    if (errs.length < 8) errs.push('promise: ' + ((r && (r.message || r)) || 'unknown'))
+  })
+
+  function esc(s) {
+    return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+  }
+
+  function report() {
+    if (document.getElementById('verion-diag')) return
+    var lines = []
+    if (!window.__verionBooted) lines.push('本体スクリプトが起動していません。')
+    for (var i = 0; i < errs.length; i++) lines.push(errs[i])
+    for (var j = 0; j < assets.length; j++) lines.push('asset: ' + assets[j])
+    if (!lines.length) lines.push('記録された失敗はありません。')
+
+    var box = document.createElement('div')
+    box.id = 'verion-diag'
+    box.setAttribute('role', 'status')
+    box.style.cssText =
+      'position:fixed;left:16px;bottom:16px;z-index:99999;max-width:min(92vw,540px);' +
+      'padding:14px 16px;border:1px solid rgba(201,163,92,.55);border-radius:10px;' +
+      'background:rgba(7,7,8,.95);color:#e8e4dc;box-shadow:0 10px 44px rgba(0,0,0,.66);' +
+      'font:12px/1.75 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;letter-spacing:.02em'
+    box.innerHTML =
+      '<div style="color:#c9a35c;letter-spacing:.18em;font-size:10px;margin-bottom:8px">DISPLAY DIAGNOSTIC</div>' +
+      '<div>' + lines.map(esc).join('<br>') + '</div>' +
+      '<div style="margin-top:10px;color:#8d8880;word-break:break-all">' + esc(navigator.userAgent) + '</div>' +
+      '<div style="margin-top:4px;color:#8d8880">' +
+        esc(innerWidth + 'x' + innerHeight + ' / dpr ' + (window.devicePixelRatio || 1)) + '</div>' +
+      '<button type="button" id="verion-diag-x" style="margin-top:10px;padding:5px 12px;' +
+        'border:1px solid rgba(201,163,92,.5);border-radius:999px;background:transparent;' +
+        'color:#c9a35c;font:inherit;cursor:pointer">閉じる</button>'
+    document.body.appendChild(box)
+    var x = document.getElementById('verion-diag-x')
+    if (x) x.addEventListener('click', function () { box.remove() })
+  }
+
+  window.__verionDiag = report
+
+  setTimeout(function () {
+    var hero = document.querySelector('.hero')
+    var app = document.getElementById('app')
+    var opened = app && !app.hidden
+
+    // 鍵を通れているのに回廊が立ち上がっていない → 文字だけのヒーローを出す
+    if (opened && hero && hero.className.indexOf('is-ready') < 0) {
+      hero.className += ' no-gl is-ready is-revealed'
+      errs.push('failsafe: 回廊が立ち上がらないため文字のヒーローへ切り替えました')
+    }
+    if (!window.__verionBooted || errs.length) report()
+  }, 9000)
+
+  if (location.hash.indexOf('diag') >= 0 || location.search.indexOf('diag') >= 0) {
+    window.addEventListener('load', function () { setTimeout(report, 1200) })
+  }
+})()
+</script>
+  <script type="module" crossorigin src="/assets/main-C2mxSzRN.js"></script>
+  <link rel="modulepreload" crossorigin href="/assets/page-video-CNTo0f9Z.js">
+  <link rel="stylesheet" crossorigin href="/assets/page-video-cxRm0OxU.css">
+  <link rel="stylesheet" crossorigin href="/assets/main-CHpwhybl.css">
+</head>
+<body>
+
+<!-- ── 鍵 ───────────────────────────────────────────────────────────── -->
+<div id="gate" class="gate" role="dialog" aria-modal="true" aria-labelledby="gate-title">
+  <div class="gate__rule" aria-hidden="true"></div>
+  <div class="gate__inner">
+    <!-- 既定の文言を素の HTML にも置く: スクリプトが動かない環境で
+         ラベルの無い入力欄だけが残るのを防ぐ（動けば辞書が上書きする） -->
+    <p class="gate__kicker" data-i18n="gate.kicker">招待制</p>
+    <h1 class="gate__title" id="gate-title">VERION</h1>
+    <p class="gate__lede" data-i18n="gate.lede">本資料は、招待を受けた方のみが閲覧できます。</p>
+    <form class="gate__form" id="gate-form" autocomplete="off">
+      <label class="gate__label" for="gate-input" data-i18n="gate.label">パスコード</label>
+      <div class="gate__row">
+        <input class="gate__input" id="gate-input" type="password" name="passcode"
+               autocomplete="current-password" spellcheck="false" required>
+        <button class="gate__submit" type="submit" data-i18n="gate.submit">入る</button>
+      </div>
+      <p class="gate__error" id="gate-error" role="alert" hidden data-i18n="gate.error">パスコードが違います。</p>
+    </form>
+    <p class="gate__note" data-i18n="gate.note">本サイトの内容は投資判断の参考情報であり、特定の有価証券の取得勧誘を目的とするものではありません。数値には目標・構想を含みます。</p>
+  </div>
+  <div class="gate__langs" id="gate-langs"></div>
+</div>
+
+<!-- ── 本体 ─────────────────────────────────────────────────────────── -->
+<div id="app" class="app" hidden>
+
+  <header class="topbar">
+    <a class="topbar__mark" href="#top" aria-label="VERION">
+      <span class="topbar__wordmark">VERION</span>
+      <span class="topbar__sep" aria-hidden="true"></span>
+      <span class="topbar__ctx" data-i18n="nav.context"></span>
+    </a>
+    <div class="topbar__right">
+      <button class="topbar__auto" id="auto-btn" aria-pressed="false">
+        <span class="topbar__auto-dot" aria-hidden="true"></span>
+        <span class="topbar__auto-play" data-i18n="nav.auto"></span>
+        <span class="topbar__auto-stop" data-i18n="nav.autoStop"></span>
+      </button>
+      <div class="fontswitch" id="fontswitch" role="group" aria-label="Text size">
+        <span class="fontswitch__lbl" aria-hidden="true">A</span>
+        <button type="button" class="fs" data-fs="m"><span data-i18n="fs.m"></span><i class="fs__rec" data-i18n="fs.rec"></i></button>
+        <button type="button" class="fs" data-fs="l"><span data-i18n="fs.l"></span></button>
+        <button type="button" class="fs" data-fs="xl"><span data-i18n="fs.xl"></span></button>
+      </div>
+      <p class="fswarn" id="fswarn" data-i18n="fs.warn" hidden></p>
+      <div class="langswitch" id="langswitch" role="group" aria-label="Language"></div>
+    </div>
+  </header>
+
+  <!-- ── 目次 ─────────────────────────────────────────────────────── -->
+  <nav class="toc" id="toc" aria-label="Index" hidden>
+    <div class="toc__head">
+      <p class="toc__title" data-i18n="toc.title"></p>
+      <button class="toc__close" id="toc-close" data-i18n="toc.close"></button>
+    </div>
+    <p class="toc__hint" data-i18n="toc.hint"></p>
+    <ol class="toc__list" id="toc-list">
+      <li><a href="#chapter-01" data-ch="01"><b>01</b><span><em data-i18n="toc.01"></em><small data-i18n="toc.01d"></small></span></a></li>
+      <li><a href="#chapter-02" data-ch="02"><b>02</b><span><em data-i18n="toc.02"></em><small data-i18n="toc.02d"></small></span></a></li>
+      <li><a href="#chapter-03" data-ch="03"><b>03</b><span><em data-i18n="toc.03"></em><small data-i18n="toc.03d"></small></span></a></li>
+      <li><a href="#chapter-04" data-ch="04"><b>04</b><span><em data-i18n="toc.04"></em><small data-i18n="toc.04d"></small></span></a></li>
+      <li><a href="#chapter-05" data-ch="05"><b>05</b><span><em data-i18n="toc.05"></em><small data-i18n="toc.05d"></small></span></a></li>
+      <li><a href="#chapter-06" data-ch="06"><b>06</b><span><em data-i18n="toc.06"></em><small data-i18n="toc.06d"></small></span></a></li>
+      <li><a href="#chapter-07" data-ch="07"><b>07</b><span><em data-i18n="toc.07"></em><small data-i18n="toc.07d"></small></span></a></li>
+      <li><a href="#chapter-08" data-ch="08"><b>08</b><span><em data-i18n="toc.08"></em><small data-i18n="toc.08d"></small></span></a></li>
+    </ol>
+  </nav>
+  <div class="toc-backdrop" id="toc-backdrop" hidden></div>
+
+  <!-- ── ヒーロー ─────────────────────────────────────────────────── -->
+  <section class="hero" id="top" aria-label="VERION">
+    <div class="hero__stage">
+      <canvas class="hero__canvas" id="cel-gl" aria-hidden="true"></canvas>
+      <div class="hero__vignette" aria-hidden="true"></div>
+      <div class="hero__grain" aria-hidden="true"></div>
+
+      <div class="era" id="era" aria-hidden="true">
+        <div class="era__year"><span id="era-year">5000</span><em id="era-suffix">BC</em></div>
+        <div class="era__label" id="era-label"></div>
+      </div>
+
+      <!-- 回廊の入口の一言（スクロールで消える） -->
+      <div class="hero__opening" id="hero-opening" aria-hidden="true">
+        <p class="hero__opening-main" data-i18n="hero.opening"></p>
+        <p class="hero__opening-sub" data-i18n="hero.opening2"></p>
+      </div>
+
+      <div class="hero__center">
+        <p class="hero__kicker" data-i18n="hero.kicker"></p>
+        <h1 class="hero__title" aria-label="VERION">
+          <span>V</span><span>E</span><span>R</span><span>I</span><span>O</span><span>N</span>
+        </h1>
+        <p class="hero__sub" data-i18n="hero.sub"></p>
+        <p class="hero__lede" data-i18n="hero.lede"></p>
+        <div class="hero__cta">
+          <a class="btn btn--gold" href="#chapter-01" data-i18n="hero.cta"></a>
+          <a class="btn btn--ghost" href="#chapter-06" data-i18n="hero.cta2"></a>
+        </div>
+      </div>
+
+      <div class="scrollcue" id="scrollcue" aria-hidden="true">
+        <span class="scrollcue__bar"><i></i></span>
+        <span class="scrollcue__text" data-i18n="hero.scroll"></span>
+      </div>
+    </div>
+    <div class="hero__track" id="hero-track" aria-hidden="true"></div>
+  </section>
+
+  <main>
+
+  <!-- ── 01 何をやるか ────────────────────────────────────────────── -->
+  <section class="chapter" id="chapter-01">
+    <div class="chapter__inner">
+      <p class="chapter__num">01</p>
+      <h2 class="chapter__title" data-i18n="ch01.title"></h2>
+
+      <!-- 瞬時にわかる: 遊べるプロダクトシミュレーション（三段の物語） -->
+      <div class="demo reveal">
+        <p class="demo__one" data-i18n="d.one"></p>
+        <p class="demo__oneb" data-i18n="d.oneb"></p>
+      </div>
+
+      <!-- ① プロダクト: 予測市場を大きく -->
+      <div class="dblock reveal">
+        <p class="dblock__k" data-i18n="d.b1k"></p>
+        <h3 class="dblock__t" data-i18n="d.b1t"></h3>
+        <p class="dblock__b" data-i18n="d.b1b"></p>
+
+        <div class="demo__stage">
+          <!-- 予測市場（クリックで価格が動く） -->
+          <div class="sim sim--pm sim--wide" id="sim-market">
+            <div class="pm__top">
+              <span class="pm__search"><i>⌕</i><span data-i18n="sim.search"></span></span>
+              <span class="pm__nav is-on" data-i18n="sim.nav1"></span>
+              <span class="pm__nav" data-i18n="sim.nav2"></span>
+              <span class="pm__balwrap"><b class="sim__bal" id="sim-bal">1,000 pt</b></span>
+              <button type="button" class="pm__add" id="sim-add">+500</button>
+            </div>
+
+            <div class="pm__tabs">
+              <span class="is-live" data-i18n="a.mkt.tab0"></span>
+              <div class="pm__tabscroll">
+                <div class="pm__tabtrack">
+                  <span>呪術廻戦</span><span>【推しの子】</span><span>ONE PIECE</span><span>チェンソーマン</span><span>葬送のフリーレン</span><span>SPY×FAMILY</span><span>鬼滅の刃</span><span>進撃の巨人</span><span>ブルーロック</span><span>薬屋のひとりごと</span><span>キングダム</span><span>HUNTER×HUNTER</span><span>ダンダダン</span><span>ガンダム</span>
+                  <span>呪術廻戦</span><span>【推しの子】</span><span>ONE PIECE</span><span>チェンソーマン</span><span>葬送のフリーレン</span><span>SPY×FAMILY</span><span>鬼滅の刃</span><span>進撃の巨人</span><span>ブルーロック</span><span>薬屋のひとりごと</span><span>キングダム</span><span>HUNTER×HUNTER</span><span>ダンダダン</span><span>ガンダム</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- フィーチャー市場 + 注目のトピック -->
+            <div class="pm__hero">
+              <div class="pm__herocard sim__card" data-market="0" data-chart>
+                <span class="pm__herobg" aria-hidden="true"></span>
+                <div class="pm__heroinfo">
+                  <div class="pm__herohead">
+                    <img class="pm__heroicon" src="/assets/market/mk-0.jpg" alt="">
+                    <div class="pm__herotags">
+                      <p class="pm__series" data-i18n="sim.s5"></p>
+                      <span class="pm__hot"><i>🔥</i><span data-i18n="sim.hot"></span></span>
+                      <span class="pm__players" data-i18n="sim.p0"></span>
+                    </div>
+                  </div>
+                  <p class="pm__heroq" data-i18n="sim.q5"></p>
+                  <p class="pm__heropct"><b class="sim__pct">73%</b><em data-i18n="sim.chance"></em><span class="sim__delta" hidden></span><span class="pm__livebadge"><i></i>LIVE</span></p>
+                  <div class="pm__yn pm__yn--hero">
+                    <button type="button" class="sim__yes"><span data-i18n="sim.yes"></span><em>73¢</em></button>
+                    <button type="button" class="sim__no"><span data-i18n="sim.no"></span><em>27¢</em></button>
+                  </div>
+                  <p class="pm__countdown"><span class="pm__cdlbl" data-i18n="sim.cd"></span><b id="pm-cd">— —</b></p>
+                  <p class="pm__meta"><span><span data-i18n="a.mkt.vol"></span> <b class="sim__vol">1,284,600</b></span><span class="sim__pos" hidden></span><span data-i18n="sim.end1"></span></p>
+                </div>
+                <div class="pm__chartwrap">
+                  <svg class="pm__chart" viewBox="0 0 460 190" preserveAspectRatio="none" aria-hidden="true"></svg>
+                  <div class="pm__xaxis"><span data-i18n="sim.x1"></span><span data-i18n="sim.x2"></span><span data-i18n="sim.x3"></span><span data-i18n="sim.x4"></span></div>
+                  <div class="pm__trades" id="pm-trades" aria-hidden="true"></div>
+                </div>
+              </div>
+
+              <aside class="pm__topics">
+                <p class="pm__topicstitle" data-i18n="sim.topics"></p>
+                <div class="pm__topic"><b>1</b><img class="pm__topicart" src="/assets/market/tp-1.jpg" alt=""><span data-i18n="sim.t1"></span><em>2.6M pt</em><i>🔥</i></div>
+                <div class="pm__topic"><b>2</b><img class="pm__topicart" src="/assets/market/tp-2.jpg" alt=""><span data-i18n="sim.t2"></span><em>1.1M pt</em><i>🔥</i></div>
+                <div class="pm__topic"><b>3</b><img class="pm__topicart" src="/assets/market/tp-3.jpg" alt=""><span data-i18n="sim.t3"></span><em>446K pt</em><i>🔥</i></div>
+                <div class="pm__topic"><b>4</b><img class="pm__topicart" src="/assets/market/tp-4.jpg" alt=""><span data-i18n="sim.t4"></span><em>178K pt</em><i>🔥</i></div>
+                <div class="pm__topic"><b>5</b><img class="pm__topicart" src="/assets/market/tp-5.jpg" alt=""><span data-i18n="sim.t5"></span><em>84K pt</em><i>🔥</i></div>
+                <span class="pm__seeall" data-i18n="sim.all"></span>
+              </aside>
+            </div>
+
+            <p class="pm__gridtitle" data-i18n="sim.allmkts"></p>
+
+            <div class="pm__grid pm__grid--3">
+
+              <div class="pm__mkcard sim__card" data-market="1" data-gauge>
+                <div class="pm__mkhead">
+                  <img class="pm__mkicon" src="/assets/market/mk-1.jpg" alt="">
+                  <span class="pm__players" data-i18n="sim.p1"></span>
+                  <svg class="pm__gauge" viewBox="0 0 84 52" aria-hidden="true">
+                    <path class="pm__gaugebg" d="M 8 46 A 34 34 0 0 1 76 46" />
+                    <path class="pm__gaugefg" d="M 8 46 A 34 34 0 0 1 76 46" />
+                    <text class="pm__gaugetxt sim__pct" x="42" y="40">68%</text>
+                    <text class="pm__gaugelbl" x="42" y="50" data-i18n="sim.o1a"></text>
+                  </svg>
+                  <p class="pm__mkq" data-i18n="sim.q1"></p>
+                </div>
+                <div class="pm__yn">
+                  <button type="button" class="sim__yes"><span data-i18n="sim.o1a"></span><em>68¢</em></button>
+                  <button type="button" class="sim__no"><span data-i18n="sim.o1b"></span><em>32¢</em></button>
+                </div>
+                <svg class="pm__minispark" viewBox="0 0 300 54" preserveAspectRatio="none" aria-hidden="true"></svg>
+                <p class="pm__meta"><span><span data-i18n="a.mkt.vol"></span> <b class="sim__vol">68,362</b></span><span class="sim__pos" hidden></span><span class="pm__res" data-i18n="sim.d1"></span><span class="sim__delta" hidden></span></p>
+              </div>
+
+              <div class="pm__mkcard sim__card" data-market="2" data-gauge>
+                <div class="pm__mkhead">
+                  <img class="pm__mkicon" src="/assets/market/mk-2.jpg" alt="">
+                  <span class="pm__players" data-i18n="sim.p2"></span>
+                  <svg class="pm__gauge" viewBox="0 0 84 52" aria-hidden="true">
+                    <path class="pm__gaugebg" d="M 8 46 A 34 34 0 0 1 76 46" />
+                    <path class="pm__gaugefg" d="M 8 46 A 34 34 0 0 1 76 46" />
+                    <text class="pm__gaugetxt sim__pct" x="42" y="40">42%</text>
+                    <text class="pm__gaugelbl" x="42" y="50" data-i18n="sim.yes"></text>
+                  </svg>
+                  <p class="pm__mkq" data-i18n="sim.q6"></p>
+                </div>
+                <div class="pm__yn">
+                  <button type="button" class="sim__yes"><span data-i18n="sim.yes"></span><em>42¢</em></button>
+                  <button type="button" class="sim__no"><span data-i18n="sim.no"></span><em>58¢</em></button>
+                </div>
+                <svg class="pm__minispark" viewBox="0 0 300 54" preserveAspectRatio="none" aria-hidden="true"></svg>
+                <p class="pm__meta"><span><span data-i18n="a.mkt.vol"></span> <b class="sim__vol">33,481</b></span><span class="sim__pos" hidden></span><span class="pm__res" data-i18n="sim.d3"></span><span class="sim__delta" hidden></span></p>
+              </div>
+
+              <div class="pm__mkcard sim__card" data-market="3" data-gauge>
+                <div class="pm__mkhead">
+                  <img class="pm__mkicon" src="/assets/market/mk-3.jpg" alt="">
+                  <span class="pm__players" data-i18n="sim.p3"></span>
+                  <svg class="pm__gauge" viewBox="0 0 84 52" aria-hidden="true">
+                    <path class="pm__gaugebg" d="M 8 46 A 34 34 0 0 1 76 46" />
+                    <path class="pm__gaugefg" d="M 8 46 A 34 34 0 0 1 76 46" />
+                    <text class="pm__gaugetxt sim__pct" x="42" y="40">61%</text>
+                    <text class="pm__gaugelbl" x="42" y="50" data-i18n="sim.yes"></text>
+                  </svg>
+                  <p class="pm__mkq" data-i18n="sim.q7"></p>
+                </div>
+                <div class="pm__yn">
+                  <button type="button" class="sim__yes"><span data-i18n="sim.yes"></span><em>61¢</em></button>
+                  <button type="button" class="sim__no"><span data-i18n="sim.no"></span><em>39¢</em></button>
+                </div>
+                <svg class="pm__minispark" viewBox="0 0 300 54" preserveAspectRatio="none" aria-hidden="true"></svg>
+                <p class="pm__meta"><span><span data-i18n="a.mkt.vol"></span> <b class="sim__vol">27,912</b></span><span class="sim__pos" hidden></span><span class="pm__res" data-i18n="sim.d4"></span><span class="sim__delta" hidden></span></p>
+              </div>
+
+            </div>
+
+            <div class="sim__ticker" aria-hidden="true">
+              <div class="sim__tickertrack">
+                <span data-i18n="sim.mq1"></span><span data-i18n="sim.mq2"></span><span data-i18n="sim.mq3"></span>
+                <span data-i18n="sim.mq1"></span><span data-i18n="sim.mq2"></span><span data-i18n="sim.mq3"></span>
+              </div>
+            </div>
+            <p class="sim__note" data-i18n="sim.note"></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ② 入口: クイズ e スポーツ -->
+      <div class="dblock reveal">
+        <p class="dblock__k" data-i18n="d.b2k"></p>
+        <h3 class="dblock__t" data-i18n="d.b2t"></h3>
+        <p class="dblock__b" data-i18n="d.b2b"></p>
+
+        <!-- 動画クイズ（実機のクイズをそのまま・自動で回り、押しても答えられる） -->
+        <div class="vq" id="vq">
+          <!-- 端末。中身（縦に切り替わるクイズ）は demo.ts が組み立てる -->
+          <div class="vq__phone">
+            <div class="vq__screen">
+              <div class="vq__status" aria-hidden="true"><i></i></div>
+              <div class="vq__top">
+                <span class="vq__brand" data-i18n="vq.brand"></span>
+                <span class="vq__ptwrap">
+                  <em class="vq__streak" id="vq-streak"></em>
+                  <b class="vq__pt" id="vq-pt">142,860 pt</b>
+                </span>
+              </div>
+
+              <div class="vq__reel" id="vq-reel"></div>
+
+              <div class="vq__bet">
+                <span data-i18n="vq.stake"></span>
+                <em class="is-on">100</em><em>500</em><em>1,000</em>
+              </div>
+              <i class="vq__home" aria-hidden="true"></i>
+            </div>
+          </div>
+
+          <aside class="vq__side">
+            <div class="vq__sideintro">
+              <p class="vq__sidek" data-i18n="vq.datak"></p>
+              <h4 class="vq__sidehead" data-i18n="vq.datahead"></h4>
+              <p class="vq__sidelead" data-i18n="vq.datalead"></p>
+            </div>
+
+            <div class="vq__result">
+              <p class="vq__sidetitle" data-i18n="vq.dist"></p>
+              <div class="vq__bars">
+                <div class="vq__bar"><b>A</b><i><span id="vq-barA"></span></i><em id="vq-pctA">—</em></div>
+                <div class="vq__bar"><b>B</b><i><span id="vq-barB"></span></i><em id="vq-pctB">—</em></div>
+              </div>
+              <p class="vq__livecount"><span data-i18n="vq.live"></span><b data-i18n="vq.livev"></b><i class="vq__dot"></i></p>
+            </div>
+
+            <p class="vq__sidetitle vq__sidetitle--gap" data-i18n="vq.data"></p>
+            <ul class="vq__datalist">
+              <li><i>01</i><span><b data-i18n="vq.dt1"></b><small data-i18n="vq.dt1d"></small></span></li>
+              <li><i>02</i><span><b data-i18n="vq.dt2"></b><small data-i18n="vq.dt2d"></small></span></li>
+              <li><i>03</i><span><b data-i18n="vq.dt3"></b><small data-i18n="vq.dt3d"></small></span></li>
+            </ul>
+            <div class="vq__datavalue">
+              <span data-i18n="vq.datavalue"></span>
+              <strong data-i18n="vq.datanote"></strong>
+              <p data-i18n="vq.datause"></p>
+            </div>
+          </aside>
+        </div>
+        <p class="sim__note sim__note--vq" data-i18n="vq.note"></p>
+
+        <div class="demo__stage demo__stage--phone" hidden>
+          <!-- スマホ: 縦に流れるクイズフィード（動画クイズに主役を譲り、ここは温存） -->
+          <div class="phone" id="quiz-phone">
+            <div class="phone__frame">
+              <i class="phone__notch"></i>
+              <div class="phone__bar">
+                <span>ANIME QUIZ</span>
+                <b id="quiz-pt">12,300 pt</b>
+              </div>
+              <div class="phone__feedwrap">
+                <div class="phone__feed" id="quiz-feed">
+
+                  <div class="qcard" data-correct="0">
+                    <img class="qcard__bg" src="/assets/cel/cel07.jpg" alt="">
+                    <i class="qcard__shade"></i>
+                    <i class="qcard__timer"></i>
+                    <p class="qcard__series">EP. QUIZ</p>
+                    <div class="qcard__panel">
+                      <p class="qcard__q" data-i18n="f1.q"></p>
+                      <button type="button" class="qcard__c" data-c="0"><b>A</b><span data-i18n="f1.a"></span></button>
+                      <button type="button" class="qcard__c" data-c="1"><b>B</b><span data-i18n="f1.b"></span></button>
+                      <p class="qcard__fx"></p>
+                    </div>
+                  </div>
+
+                  <div class="qcard" data-correct="1">
+                    <img class="qcard__bg" src="/assets/cel/cel05.jpg" alt="">
+                    <i class="qcard__shade"></i>
+                    <i class="qcard__timer"></i>
+                    <p class="qcard__series">VOICE</p>
+                    <div class="qcard__panel">
+                      <p class="qcard__q" data-i18n="f2.q"></p>
+                      <button type="button" class="qcard__c" data-c="0"><b>A</b><span data-i18n="f2.a"></span></button>
+                      <button type="button" class="qcard__c" data-c="1"><b>B</b><span data-i18n="f2.b"></span></button>
+                      <p class="qcard__fx"></p>
+                    </div>
+                  </div>
+
+                  <div class="qcard" data-correct="0">
+                    <img class="qcard__bg" src="/assets/cel/j02.jpg" alt="">
+                    <i class="qcard__shade"></i>
+                    <i class="qcard__timer"></i>
+                    <p class="qcard__series">CINEMA</p>
+                    <div class="qcard__panel">
+                      <p class="qcard__q" data-i18n="f3.q"></p>
+                      <button type="button" class="qcard__c" data-c="0"><b>A</b><span data-i18n="f3.a"></span></button>
+                      <button type="button" class="qcard__c" data-c="1"><b>B</b><span data-i18n="f3.b"></span></button>
+                      <p class="qcard__fx"></p>
+                    </div>
+                  </div>
+
+                  <div class="qcard" data-correct="1">
+                    <img class="qcard__bg" src="/assets/cel/x03.jpg" alt="">
+                    <i class="qcard__shade"></i>
+                    <i class="qcard__timer"></i>
+                    <p class="qcard__series">SAKUGA</p>
+                    <div class="qcard__panel">
+                      <p class="qcard__q" data-i18n="f4.q"></p>
+                      <button type="button" class="qcard__c" data-c="0"><b>A</b><span data-i18n="f4.a"></span></button>
+                      <button type="button" class="qcard__c" data-c="1"><b>B</b><span data-i18n="f4.b"></span></button>
+                      <p class="qcard__fx"></p>
+                    </div>
+                  </div>
+
+                  <!-- 週の頂点: 賞金カード -->
+                  <div class="qcard qcard--prize">
+                    <img class="qcard__bg" src="/assets/cel/cel03.jpg" alt="">
+                    <i class="qcard__shade qcard__shade--gold"></i>
+                    <div class="qcard__panel">
+                      <p class="qcard__series" data-i18n="a.final.tag"></p>
+                      <p class="qcard__prize" data-i18n="a.final.prize"></p>
+                      <p class="qcard__plus" data-i18n="a.final.plus"></p>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 第2話: セル画独占の物語（スクロール駆動） -->
+    <div class="story" id="story2">
+      <div class="story__stage" id="story2-stage">
+        <div class="story__head">
+          <span class="story__head-k">CEL &amp; GENGA MONOPOLY</span>
+          <b data-i18n="cs.title"></b>
+        </div>
+        <svg id="story2-svg" preserveAspectRatio="xMidYMid meet" aria-hidden="true"></svg>
+        <div class="story__cap">
+          <span class="story__chip" id="story2-chip"></span>
+          <p class="story__caption" id="story2-caption"></p>
+          <span class="story__sub" id="story2-sub"></span>
+        </div>
+      </div>
+      <div class="story__track" aria-hidden="true"></div>
+    </div>
+
+
+
+    <div class="chapter__inner">
+      <!-- ③ ひとつの器: プラットフォーム宣言 -->
+      <div class="dblock dblock--unite reveal">
+        <p class="dblock__k" data-i18n="d.b3k"></p>
+        <h3 class="dblock__t" data-i18n="d.b3t"></h3>
+        <p class="dblock__tag" data-i18n="d.b3tag"></p>
+        <p class="dblock__b" data-i18n="d.b3b"></p>
+
+        <div class="flow" aria-hidden="true">
+          <span class="flow__node" data-i18n="d.f1"></span>
+          <span class="flow__link"><i>→</i><em data-i18n="d.fm"></em><i>→</i></span>
+          <span class="flow__node flow__node--gold" data-i18n="d.f2"></span>
+        </div>
+
+        <p class="demo__note" data-i18n="d.note"></p>
+      </div>
+
+      <p class="chapter__lede" data-i18n="ch01.lede"></p>
+      <div class="cards cards--2 reveal">
+        <article class="card"><h3 data-i18n="ch01.c1t"></h3><p data-i18n="ch01.c1b"></p></article>
+        <article class="card"><h3 data-i18n="ch01.c2t"></h3><p data-i18n="ch01.c2b"></p></article>
+        <article class="card"><h3 data-i18n="ch01.c3t"></h3><p data-i18n="ch01.c3b"></p></article>
+        <article class="card"><h3 data-i18n="ch01.c4t"></h3><p data-i18n="ch01.c4b"></p></article>
+      </div>
+      <p class="chapter__aside reveal" data-i18n="ch01.scale"></p>
+    </div>
+  </section>
+
+  <!-- ── 02 なぜ日本か、なぜ今か ──────────────────────────────────── -->
+  <section class="chapter chapter--alt" id="chapter-02">
+    <div class="chapter__inner">
+      <p class="chapter__num">02</p>
+      <h2 class="chapter__title" data-i18n="ch02.title"></h2>
+      <p class="chapter__lede" data-i18n="ch02.lede"></p>
+      <ol class="beats reveal">
+        <li class="beat"><b>1</b><div><h3 data-i18n="ch02.b1t"></h3><p data-i18n="ch02.b1b"></p></div></li>
+        <li class="beat"><b>2</b><div><h3 data-i18n="ch02.b2t"></h3><p data-i18n="ch02.b2b"></p></div></li>
+        <li class="beat"><b>3</b><div><h3 data-i18n="ch02.b3t"></h3><p data-i18n="ch02.b3b"></p></div></li>
+        <li class="beat"><b>4</b><div><h3 data-i18n="ch02.bait"></h3><p data-i18n="ch02.baib"></p></div></li>
+        <li class="beat"><b>5</b><div><h3 data-i18n="ch02.b4t"></h3><p data-i18n="ch02.b4b"></p></div></li>
+        <li class="beat"><b>6</b><div><h3 data-i18n="ch02.b5t"></h3><p data-i18n="ch02.b5b"></p></div></li>
+        <li class="beat"><b>7</b><div><h3 data-i18n="ch02.b6t"></h3><p data-i18n="ch02.b6b"></p></div></li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ── 03 三つの事業 ────────────────────────────────────────────── -->
+  <section class="chapter" id="chapter-03">
+    <div class="chapter__inner">
+      <p class="chapter__num">03</p>
+      <h2 class="chapter__title" data-i18n="ch03.title"></h2>
+      <p class="chapter__lede" data-i18n="ch03.lede"></p>
+      <div class="cards cards--2 reveal">
+        <article class="card card--pillar"><p class="card__role" data-i18n="ch03.p1r"></p><h3 data-i18n="ch03.p1t"></h3><p data-i18n="ch03.p1b"></p></article>
+        <article class="card card--pillar"><p class="card__role" data-i18n="ch03.p2r"></p><h3 data-i18n="ch03.p2t"></h3><p data-i18n="ch03.p2b"></p></article>
+      </div>
+      <p class="chapter__aside chapter__aside--gold reveal" data-i18n="ch03.connect"></p>
+
+      <div class="mfsum reveal">
+        <span data-i18n="mf.sumT"></span>
+        <b data-i18n="mf.sum1"></b>
+        <b data-i18n="mf.sum2"></b>
+        <b class="is-p2" data-i18n="mf.sum3"></b>
+      </div>
+      <p class="chapter__foot" data-i18n="mf.sub"></p>
+
+      <h3 class="sec" data-i18n="ai.T"></h3>
+      <p class="chapter__lede chapter__lede--tight" data-i18n="ai.L"></p>
+      <div class="aitick reveal" id="aitick" aria-hidden="true">
+        <span class="aitick__dot"></span>
+        <code>VERION-AI</code>
+        <code><span data-i18n="ai.t1"></span>: <b>ONLINE</b></code>
+        <code><span data-i18n="ai.t2"></span>: <b id="ai-quiz">0</b></code>
+        <code><span data-i18n="ai.t3"></span>: <b id="ai-db">0</b></code>
+        <code><span data-i18n="ai.t4"></span>: <b>12</b></code>
+        <em data-i18n="ai.tNote"></em>
+      </div>
+      <div class="cards cards--2 reveal">
+        <article class="card"><h3 data-i18n="ai.c1t"></h3><p data-i18n="ai.c1b"></p></article>
+        <article class="card"><h3 data-i18n="ai.c2t"></h3><p data-i18n="ai.c2b"></p></article>
+        <article class="card"><h3 data-i18n="ai.c3t"></h3><p data-i18n="ai.c3b"></p></article>
+        <article class="card"><h3 data-i18n="ai.c4t"></h3><p data-i18n="ai.c4b"></p></article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 04 市場と数字 ────────────────────────────────────────────── -->
+  <section class="chapter chapter--alt" id="chapter-04">
+    <div class="chapter__inner chapter__inner--wide">
+      <p class="chapter__num">04</p>
+      <h2 class="chapter__title" data-i18n="ch04.title"></h2>
+      <p class="chapter__lede" data-i18n="ch04.lede"></p>
+
+      <figure class="mchart mchart--hero reveal">
+        <figcaption>
+          <p class="mchart__kicker" data-i18n="m1.k"></p>
+          <p class="mchart__claim" data-i18n="m1.c"></p>
+        </figcaption>
+        <div class="mchart__body" id="m-steps"></div>
+        <p class="mchart__note" data-i18n="m1.note"></p>
+        <p class="mchart__src" data-i18n="m1.s"></p>
+      </figure>
+
+      <div class="mgrid">
+        <figure class="mchart reveal">
+          <figcaption>
+            <p class="mchart__kicker" data-i18n="m2.k"></p>
+            <p class="mchart__claim" data-i18n="m2.c"></p>
+          </figcaption>
+          <div class="mchart__body" id="m-japan"></div>
+          <p class="mchart__src" data-i18n="m2.s"></p>
+        </figure>
+
+        <figure class="mchart reveal">
+          <figcaption>
+            <p class="mchart__kicker" data-i18n="m3.k"></p>
+            <p class="mchart__claim" data-i18n="m3.c"></p>
+          </figcaption>
+          <div class="mchart__body" id="m-anime"></div>
+          <p class="mchart__src" data-i18n="m3.s"></p>
+        </figure>
+      </div>
+
+      <div class="mgrid">
+        <figure class="mchart reveal">
+          <figcaption>
+            <p class="mchart__kicker" data-i18n="m5.k"></p>
+            <p class="mchart__claim" data-i18n="m5.c"></p>
+          </figcaption>
+          <div class="mchart__body" id="m-work"></div>
+          <p class="mchart__src" data-i18n="m5.s"></p>
+        </figure>
+
+        <figure class="mchart reveal">
+          <figcaption>
+            <p class="mchart__kicker" data-i18n="m6.k"></p>
+            <p class="mchart__claim" data-i18n="m6.c"></p>
+          </figcaption>
+          <div class="mchart__body" id="m-auction"></div>
+          <p class="mchart__src" data-i18n="m6.s"></p>
+        </figure>
+      </div>
+
+      <div class="mgrid">
+        <figure class="mchart reveal">
+          <figcaption>
+            <p class="mchart__kicker" data-i18n="m4.k"></p>
+            <p class="mchart__claim" data-i18n="m4.c"></p>
+          </figcaption>
+          <div class="mchart__body" id="m-export"></div>
+          <p class="mchart__src" data-i18n="m4.s"></p>
+        </figure>
+
+        <figure class="mchart reveal">
+          <figcaption>
+            <p class="mchart__kicker" data-i18n="mh.k"></p>
+            <p class="mchart__claim" data-i18n="mh.c"></p>
+          </figcaption>
+          <div class="stats stats--half" id="stats-heat"></div>
+        </figure>
+      </div>
+
+      <div class="stats reveal" id="stats-main"></div>
+
+      <p class="chapter__foot" data-i18n="ch04.note"></p>
+    </div>
+  </section>
+
+  <!-- ── 05 IP と現物資産 ─────────────────────────────────────────── -->
+  <section class="chapter" id="chapter-05">
+    <div class="chapter__inner">
+      <p class="chapter__num">05</p>
+      <h2 class="chapter__title" data-i18n="ch05.title"></h2>
+      <p class="chapter__lede" data-i18n="ch05.lede"></p>
+      <div class="cards cards--2 reveal">
+        <article class="card"><h3 data-i18n="ch05.f1t"></h3><p data-i18n="ch05.f1b"></p></article>
+        <article class="card"><h3 data-i18n="ch05.f2t"></h3><p data-i18n="ch05.f2b"></p></article>
+        <article class="card"><h3 data-i18n="ch05.f3t"></h3><p data-i18n="ch05.f3b"></p></article>
+        <article class="card"><h3 data-i18n="ch05.f4t"></h3><p data-i18n="ch05.f4b"></p></article>
+      </div>
+      <h3 class="sec" data-i18n="ch05.gal"></h3>
+      <div class="gallery reveal" aria-hidden="true">
+        <div class="gallery__row"><div class="gallery__track"><span class="gallery__item"><img src="/assets/cel/d09.jpg" alt="" loading="lazy"></span><span class="gallery__item"><img src="/assets/cel/cel03.jpg" alt="" loading="lazy"></span><span class="gallery__item"><img src="/assets/cel/d29.jpg" alt="" loading="lazy"></span><span class="gallery__item"><img src="/assets/cel/j02.jpg" alt="" loading="lazy"></span><span class="gallery__item"><img src="/assets/cel/d25.jpg" alt="" loading="lazy"></span><span class="gallery__item"><img src="/assets/cel/cel07.jpg" alt="" loading="lazy"></span><span class="gallery__item"><img src="/assets/cel/d34.jpg" alt="" loading="lazy"></span><span class="gallery__item"><img src="/assets/cel/j01.jpg" alt="" loading="lazy"></span><span class="gallery__item"><img src="/assets/cel/d21.jpg" alt="" loading="lazy"></span><span class="gallery__item"><img src="/assets/cel/cel05.jpg" alt="" loading="lazy"></span><span class="gallery__item"><img src="/assets/cel/d39.jpg" alt="" loading="lazy"></span><span class="gallery__item"><img src="/assets/cel/j03.jpg" alt="" loading="lazy"></span><span class="gallery__item"><img src="/assets/cel/d26.jpg" alt="" loading="lazy"></span><span class="gallery__item"><img src="/assets/cel/cel01.jpg" alt="" loading="lazy"></span><span class="gallery__item"><img src="/assets/cel/d16.jpg" alt="" loading="lazy"></span><span class="gallery__item"><img src="/assets/cel/cel06.jpg" alt="" loading="lazy"></span><span class="gallery__item"><img src="/assets/cel/d36.jpg" alt="" loading="lazy"></span><span class="gallery__item"><img src="/assets/cel/cel02.jpg" alt="" loading="lazy"></span><span class="gallery__item"><img src="/assets/cel/d28.jpg" alt="" loading="lazy"></span><span class="gallery__item"><img src="/assets/cel/cel04.jpg" alt="" loading="lazy"></span><span class="gallery__item"><img src="/assets/cel/d09.jpg" alt="" loading="lazy"></span><span class="gallery__item"><img src="/assets/cel/cel03.jpg" alt="" loading="lazy"></span><span class="gallery__item"><img src="/assets/cel/d29.jpg" alt="" loading="lazy"></span><span class="gallery__item"><img src="/assets/cel/j02.jpg" alt="" loading="lazy"></span><span class="gallery__item"><img src="/assets/cel/d25.jpg" alt="" loading="lazy"></span><span class="gallery__item"><img src="/assets/cel/cel07.jpg" alt="" loading="lazy"></span><span class="gallery__item"><img src="/assets/cel/d34.jpg" alt="" loading="lazy"></span><span class="gallery__item"><img src="/assets/cel/j01.jpg" alt="" loading="lazy"></span><span class="gallery__item"><img src="/assets/cel/d21.jpg" alt="" loading="lazy"></span><span class="gallery__item"><img src="/assets/cel/cel05.jpg" alt="" loading="lazy"></span><span class="gallery__item"><img src="/assets/cel/d39.jpg" alt="" loading="lazy"></span><span class="gallery__item"><img src="/assets/cel/j03.jpg" alt="" loading="lazy"></span><span class="gallery__item"><img src="/assets/cel/d26.jpg" alt="" loading="lazy"></span><span class="gallery__item"><img src="/assets/cel/cel01.jpg" alt="" loading="lazy"></span><span class="gallery__item"><img src="/assets/cel/d16.jpg" alt="" loading="lazy"></span><span class="gallery__item"><img src="/assets/cel/cel06.jpg" alt="" loading="lazy"></span><span class="gallery__item"><img src="/assets/cel/d36.jpg" alt="" loading="lazy"></span><span class="gallery__item"><img src="/assets/cel/cel02.jpg" alt="" loading="lazy"></span><span class="gallery__item"><img src="/assets/cel/d28.jpg" alt="" loading="lazy"></span><span class="gallery__item"><img src="/assets/cel/cel04.jpg" alt="" loading="lazy"></span></div></div>
+        <div class="gallery__row"><div class="gallery__track gallery__track--rev"><span class="gallery__item"><img src="/assets/cel/d24.jpg" alt="" loading="lazy"></span><span class="gallery__item"><img src="/assets/cel/x02.jpg" alt="" loading="lazy"></span><span class="gallery__item"><img src="/assets/cel/d38.jpg" alt="" loading="lazy"></span><span class="gallery__item"><img src="/assets/cel/x05.jpg" alt="" loading="lazy"></span><span class="gallery__item"><img src="/assets/cel/d33.jpg" alt="" loading="lazy"></span><span class="gallery__item"><img src="/assets/cel/x08.jpg" alt="" loading="lazy"></span><span class="gallery__item"><img src="/assets/cel/d35.jpg" alt="" loading="lazy"></span><span class="gallery__item"><img src="/assets/cel/x03.jpg" alt="" loading="lazy"></span><span class="gallery__item"><img src="/assets/cel/d40.jpg" alt="" loading="lazy"></span><span class="gallery__item"><img src="/assets/cel/x10.jpg" alt="" loading="lazy"></span><span class="gallery__item"><img src="/assets/cel/d06.jpg" alt="" loading="lazy"></span><span class="gallery__item"><img src="/assets/cel/x17.jpg" alt="" loading="lazy"></span><span class="gallery__item"><img src="/assets/cel/d13.jpg" alt="" loading="lazy"></span><span class="gallery__item"><img src="/assets/cel/x24.jpg" alt="" loading="lazy"></span><span class="gallery__item"><img src="/assets/cel/d11.jpg" alt="" loading="lazy"></span><span class="gallery__item"><img src="/assets/cel/x31.jpg" alt="" loading="lazy"></span><span class="gallery__item"><img src="/assets/cel/d17.jpg" alt="" loading="lazy"></span><span class="gallery__item"><img src="/assets/cel/d05.jpg" alt="" loading="lazy"></span><span class="gallery__item"><img src="/assets/cel/d30.jpg" alt="" loading="lazy"></span><span class="gallery__item"><img src="/assets/cel/d12.jpg" alt="" loading="lazy"></span><span class="gallery__item"><img src="/assets/cel/d24.jpg" alt="" loading="lazy"></span><span class="gallery__item"><img src="/assets/cel/x02.jpg" alt="" loading="lazy"></span><span class="gallery__item"><img src="/assets/cel/d38.jpg" alt="" loading="lazy"></span><span class="gallery__item"><img src="/assets/cel/x05.jpg" alt="" loading="lazy"></span><span class="gallery__item"><img src="/assets/cel/d33.jpg" alt="" loading="lazy"></span><span class="gallery__item"><img src="/assets/cel/x08.jpg" alt="" loading="lazy"></span><span class="gallery__item"><img src="/assets/cel/d35.jpg" alt="" loading="lazy"></span><span class="gallery__item"><img src="/assets/cel/x03.jpg" alt="" loading="lazy"></span><span class="gallery__item"><img src="/assets/cel/d40.jpg" alt="" loading="lazy"></span><span class="gallery__item"><img src="/assets/cel/x10.jpg" alt="" loading="lazy"></span><span class="gallery__item"><img src="/assets/cel/d06.jpg" alt="" loading="lazy"></span><span class="gallery__item"><img src="/assets/cel/x17.jpg" alt="" loading="lazy"></span><span class="gallery__item"><img src="/assets/cel/d13.jpg" alt="" loading="lazy"></span><span class="gallery__item"><img src="/assets/cel/x24.jpg" alt="" loading="lazy"></span><span class="gallery__item"><img src="/assets/cel/d11.jpg" alt="" loading="lazy"></span><span class="gallery__item"><img src="/assets/cel/x31.jpg" alt="" loading="lazy"></span><span class="gallery__item"><img src="/assets/cel/d17.jpg" alt="" loading="lazy"></span><span class="gallery__item"><img src="/assets/cel/d05.jpg" alt="" loading="lazy"></span><span class="gallery__item"><img src="/assets/cel/d30.jpg" alt="" loading="lazy"></span><span class="gallery__item"><img src="/assets/cel/d12.jpg" alt="" loading="lazy"></span></div></div>
+      </div>
+      <p class="chapter__foot" data-i18n="ch05.galNote"></p>
+
+      <h3 class="sec" data-i18n="ch05.pfT"></h3>
+      <p class="chapter__lede chapter__lede--tight" data-i18n="ch05.pfL"></p>
+      <div class="proof reveal">
+        <figure class="proof__item proof__item--main">
+          <img src="/assets/proof/registry.jpg" alt="" />
+          <figcaption data-i18n="ch05.pf3"></figcaption>
+        </figure>
+        <figure class="proof__item">
+          <img src="/assets/proof/inspect.jpg" alt="" />
+          <figcaption data-i18n="ch05.pf1"></figcaption>
+        </figure>
+        <figure class="proof__item">
+          <img src="/assets/proof/sorting.jpg" alt="" />
+          <figcaption data-i18n="ch05.pf2"></figcaption>
+        </figure>
+      </div>
+
+      <h3 class="sec" data-i18n="ch05.atT"></h3>
+      <div class="chapter__lede chapter__lede--tight cert-copy">
+        <p class="cert-copy__line"><span data-i18n="ch05.atL1a"></span><br class="cert-copy__mobile-break" aria-hidden="true"><span data-i18n="ch05.atL1b"></span></p>
+        <p class="cert-copy__line"><span data-i18n="ch05.atL2a"></span><br class="cert-copy__mobile-break" aria-hidden="true"><span data-i18n="ch05.atL2b"></span></p>
+        <p class="cert-copy__line"><span data-i18n="ch05.atL3a"></span><br class="cert-copy__mobile-break" aria-hidden="true"><span data-i18n="ch05.atL3b"></span></p>
+      </div>
+      <div class="proof reveal">
+        <figure class="proof__item">
+          <img src="/assets/proof/cert-pair.jpg" alt="" />
+          <figcaption data-i18n="ch05.pf4"></figcaption>
+        </figure>
+        <figure class="proof__item">
+          <img src="/assets/proof/genga-kiki.jpg" alt="" />
+          <figcaption data-i18n="ch05.pf5"></figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 06 調達とリターン ────────────────────────────────────────── -->
+  <section class="chapter chapter--alt" id="chapter-06">
+    <div class="chapter__inner chapter__inner--wide">
+      <p class="chapter__num">06</p>
+      <h2 class="chapter__title" data-i18n="ch06.title"></h2>
+      <p class="chapter__lede" data-i18n="ch06.lede"></p>
+    </div>
+
+    <!-- 調達の物語（スクロール駆動のフラットアニメ） -->
+    <div class="story" id="story">
+      <div class="story__stage" id="story-stage">
+        <div class="story__head">
+          <span class="story__head-k">FUNDING STORY</span>
+          <b id="story-round"></b>
+        </div>
+        <svg id="story-svg" preserveAspectRatio="xMidYMid meet" aria-hidden="true"></svg>
+        <div class="story__cap">
+          <span class="story__chip" id="story-chip"></span>
+          <p class="story__caption" id="story-caption"></p>
+          <span class="story__sub" id="story-sub"></span>
+        </div>
+      </div>
+      <div class="story__track" aria-hidden="true"></div>
+    </div>
+
+    <div class="story" id="story3">
+      <div class="story__stage" id="story3-stage">
+        <div class="story__head">
+          <span class="story__head-k">RETURN STORY</span>
+          <b id="story3-round"></b>
+          <div class="story__amt">
+            <span class="story__amt-label" data-i18n="rs.amount"></span>
+            <input type="range" id="story3-amt" min="1000" max="100000" step="1000" value="10000" aria-label="投資額" />
+            <output id="story3-amt-out"></output>
+          </div>
+        </div>
+        <svg id="story3-svg" preserveAspectRatio="xMidYMid meet" aria-hidden="true"></svg>
+        <div class="story__cap">
+          <span class="story__chip" id="story3-chip"></span>
+          <p class="story__caption" id="story3-caption"></p>
+          <span class="story__sub" id="story3-sub"></span>
+        </div>
+      </div>
+      <div class="story__track" aria-hidden="true"></div>
+    </div>
+
+    <h3 class="sec" data-i18n="rs.title"></h3>
+    <p class="chapter__lede chapter__lede--tight" data-i18n="rs.lede"></p>
+    <div class="rsim reveal" id="rsim">
+      <div class="rsim__controls">
+        <div class="rsim__row">
+          <label><span data-i18n="rs.amount"></span> <output id="rs-amount-out"></output></label>
+          <input type="range" id="rs-amount" min="1000" max="100000" step="1000" value="10000" />
+        </div>
+        <div class="rsim__row">
+          <span class="rsim__label" data-i18n="rs.round"></span>
+          <div class="rsim__pills" id="rs-pills">
+            <button type="button" data-lane="0" class="is-on" data-i18n="rt.lane1"></button>
+            <button type="button" data-lane="1" data-i18n="rt.lane2"></button>
+            <button type="button" data-lane="2" data-i18n="rt.lane3"></button>
+            <button type="button" data-lane="3" data-i18n="rt.lane4"></button>
+          </div>
+        </div>
+      </div>
+      <div class="rsim__out" id="rs-out"></div>
+      <p class="rsim__note" data-i18n="rs.note"></p>
+    </div>
+
+    <div class="chapter__inner chapter__inner--wide">
+      <h3 class="sec" data-i18n="ch06.ladder"></h3>
+      <figure class="ladder reveal" id="ladder" aria-label="Equity ladder"></figure>
+      <p class="chapter__foot" data-i18n="ch06.ladderNote"></p>
+
+      <h3 class="sec" data-i18n="ch06.gates"></h3>
+      <p class="chapter__body" data-i18n="ch06.gatesNote"></p>
+      <div class="rounds reveal" id="rounds"></div>
+
+      <div class="split">
+        <div>
+          <h3 class="sec" data-i18n="ch06.terms"></h3>
+          <p class="chapter__body" data-i18n="ch06.termsB"></p>
+        </div>
+        <div>
+          <h3 class="sec" data-i18n="ch06.use"></h3>
+          <div class="usebars reveal" id="usebars"></div>
+          <p class="chapter__foot" data-i18n="ch06.useNote"></p>
+        </div>
+      </div>
+
+      <h3 class="sec" data-i18n="ch06.returns"></h3>
+      <div class="cards cards--3 reveal">
+        <article class="card card--step"><b>1</b><h3 data-i18n="ch06.ret1t"></h3><p data-i18n="ch06.ret1b"></p></article>
+        <article class="card card--step"><b>2</b><h3 data-i18n="ch06.ret2t"></h3><p data-i18n="ch06.ret2b"></p></article>
+        <article class="card card--step"><b>3</b><h3 data-i18n="ch06.ret3t"></h3><p data-i18n="ch06.ret3b"></p></article>
+      </div>
+
+      <h3 class="sec" data-i18n="ch06.gov"></h3>
+      <ol class="govlist reveal">
+        <li data-i18n="ch06.gov1"></li>
+        <li data-i18n="ch06.gov2"></li>
+        <li data-i18n="ch06.gov3"></li>
+        <li data-i18n="ch06.gov4"></li>
+      </ol>
+      <p class="chapter__body" data-i18n="ch06.capital"></p>
+      <p class="chapter__disclaimer" data-i18n="ch06.disclaimer"></p>
+    </div>
+  </section>
+
+  <!-- ── 07 チーム ────────────────────────────────────────────────── -->
+  <section class="chapter" id="chapter-07">
+    <div class="chapter__inner">
+      <p class="chapter__num">07</p>
+      <h2 class="chapter__title" data-i18n="ch07.title"></h2>
+      <p class="chapter__lede" data-i18n="ch07.lede"></p>
+      <div class="people people--photo reveal">
+        <div class="person person--photo">
+          <figure class="person__photo"><img src="/assets/team/yamashita.jpg" alt="" loading="lazy" /></figure>
+          <div class="person__body">
+            <h3 data-i18n="ch07.m1n"></h3><p data-i18n="ch07.m1r"></p>
+            <ul class="person__bio">
+              <li data-i18n="ch07.m1b1"></li>
+              <li data-i18n="ch07.m1b2"></li>
+              <li data-i18n="ch07.m1b3"></li>
+            </ul>
+          </div>
+        </div>
+        <div class="person person--photo">
+          <figure class="person__photo"><img src="/assets/team/wakayanagi.jpg" alt="" loading="lazy" /></figure>
+          <div class="person__body">
+            <h3 data-i18n="ch07.m2n"></h3><p data-i18n="ch07.m2r"></p>
+            <ul class="person__bio">
+              <li data-i18n="ch07.m2b1"></li>
+              <li data-i18n="ch07.m2b2"></li>
+              <li data-i18n="ch07.m2b3"></li>
+            </ul>
+          </div>
+        </div>
+        <div class="person person--photo">
+          <figure class="person__photo"><img src="/assets/team/asai.jpg" alt="" loading="lazy" /></figure>
+          <div class="person__body">
+            <h3 data-i18n="ch07.m3n"></h3><p data-i18n="ch07.m3r"></p>
+            <ul class="person__bio">
+              <li data-i18n="ch07.m3b1"></li>
+              <li data-i18n="ch07.m3b2"></li>
+              <li data-i18n="ch07.m3b3"></li>
+            </ul>
+          </div>
+        </div>
+        <div class="person person--photo person--adv">
+          <figure class="person__photo"><img src="/assets/team/morikawa.jpg" alt="" loading="lazy" /></figure>
+          <div class="person__body">
+            <h3 data-i18n="ch07.m4n"></h3><p data-i18n="ch07.m4r"></p>
+            <ul class="person__bio">
+              <li data-i18n="ch07.m4b1"></li>
+              <li data-i18n="ch07.m4b2"></li>
+              <li data-i18n="ch07.m4b3"></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 08 リスクと法務 ──────────────────────────────────────────── -->
+  <section class="chapter chapter--alt" id="chapter-08">
+    <div class="chapter__inner">
+      <p class="chapter__num">08</p>
+      <h2 class="chapter__title" data-i18n="ch08.title"></h2>
+      <p class="chapter__lede" data-i18n="ch08.lede"></p>
+
+      <blockquote class="qa reveal">
+        <p class="qa__a" data-i18n="ch08.qa"></p>
+        <p class="qa__b" data-i18n="ch08.qab"></p>
+      </blockquote>
+
+      <div class="cards cards--2 reveal">
+        <article class="card"><h3 data-i18n="ch08.a2t"></h3><p data-i18n="ch08.a2b"></p></article>
+        <article class="card"><h3 data-i18n="ch08.a3t"></h3><p data-i18n="ch08.a3b"></p></article>
+      </div>
+
+      <h3 class="sec" data-i18n="ch08.expT"></h3>
+      <div class="people reveal">
+        <div class="person"><h3 data-i18n="ch08.e1n"></h3><p data-i18n="ch08.e1r"></p></div>
+        <div class="person"><h3 data-i18n="ch08.e2n"></h3><p data-i18n="ch08.e2r"></p></div>
+        <div class="person"><h3 data-i18n="ch08.e3n"></h3><p data-i18n="ch08.e3r"></p></div>
+        <div class="person"><h3 data-i18n="ch08.e4n"></h3><p data-i18n="ch08.e4r"></p></div>
+      </div>
+
+      <h3 class="sec" data-i18n="ch08.legalTitle"></h3>
+      <ol class="govlist reveal">
+        <li data-i18n="ch08.legal1"></li>
+        <li data-i18n="ch08.legal2"></li>
+        <li data-i18n="ch08.legal4"></li>
+      </ol>
+      <p class="chapter__disclaimer" data-i18n="ch08.riskNote"></p>
+    </div>
+  </section>
+
+  <section class="chapter" id="chapter-09">
+    <div class="chapter__inner">
+      <p class="chapter__num">09</p>
+      <h2 class="chapter__title" data-i18n="toc.09"></h2>
+      <p class="chapter__lede" data-i18n="ch09.lede"></p>
+      <nav class="bm reveal" aria-label="AI review">
+        <a class="bm__row" href="/deep-review.html">
+          <span class="bm__no">09</span>
+          <span class="bm__body"><b data-i18n="toc.09"></b><small data-i18n="toc.09d"></small></span>
+          <span class="bm__arrow" aria-hidden="true">→</span>
+        </a>
+      </nav>
+    </div>
+  </section>
+
+  </main>
+
+    <!-- ── 最下部メニュー（深掘り） ─────────────────────────────────── -->
+  <section class="chapter" id="deepdive">
+    <div class="chapter__inner">
+      <p class="chapter__num">DEEP DIVE</p>
+      <h2 class="chapter__title" data-i18n="bm.title"></h2>
+      <p class="chapter__lede" data-i18n="bm.lede"></p>
+      <nav class="bm reveal" aria-label="Deep dive">
+        <a class="bm__row" href="/deep-strategy.html">
+          <span class="bm__no">00</span>
+          <span class="bm__body"><b data-i18n="bm.10"></b><small data-i18n="bm.10d"></small></span>
+          <span class="bm__arrow" aria-hidden="true">→</span>
+        </a>
+        <a class="bm__row" href="/deep-product.html">
+          <span class="bm__no">01</span>
+          <span class="bm__body"><b data-i18n="bm.1"></b><small data-i18n="bm.1d"></small></span>
+          <span class="bm__arrow" aria-hidden="true">→</span>
+        </a>
+        <a class="bm__row" href="/deep-legal.html">
+          <span class="bm__no">02</span>
+          <span class="bm__body"><b data-i18n="bm.2"></b><small data-i18n="bm.2d"></small></span>
+          <span class="bm__arrow" aria-hidden="true">→</span>
+        </a>
+        <a class="bm__row" href="/deep-marketing.html">
+          <span class="bm__no">03</span>
+          <span class="bm__body"><b data-i18n="bm.3"></b><small data-i18n="bm.3d"></small></span>
+          <span class="bm__arrow" aria-hidden="true">→</span>
+        </a>
+        <a class="bm__row" href="/deep-cel.html">
+          <span class="bm__no">04</span>
+          <span class="bm__body"><b data-i18n="bm.4"></b><small data-i18n="bm.4d"></small></span>
+          <span class="bm__arrow" aria-hidden="true">→</span>
+        </a>
+        <a class="bm__row" href="/deep-why.html">
+          <span class="bm__no">05</span>
+          <span class="bm__body"><b data-i18n="bm.5"></b><small data-i18n="bm.5d"></small></span>
+          <span class="bm__arrow" aria-hidden="true">→</span>
+        </a>
+        <a class="bm__row" href="/deep-numbers.html">
+          <span class="bm__no">06</span>
+          <span class="bm__body"><b data-i18n="bm.6"></b><small data-i18n="bm.6d"></small></span>
+          <span class="bm__arrow" aria-hidden="true">→</span>
+        </a>
+        <a class="bm__row" href="/deep-ai.html">
+          <span class="bm__no">07</span>
+          <span class="bm__body"><b data-i18n="bm.7"></b><small data-i18n="bm.7d"></small></span>
+          <span class="bm__arrow" aria-hidden="true">→</span>
+        </a>
+        <a class="bm__row" href="/deep-monetize.html">
+          <span class="bm__no">08</span>
+          <span class="bm__body"><b data-i18n="bm.8"></b><small data-i18n="bm.8d"></small></span>
+          <span class="bm__arrow" aria-hidden="true">→</span>
+        </a>
+        <a class="bm__row" href="/deep-ip.html">
+          <span class="bm__no">09</span>
+          <span class="bm__body"><b data-i18n="bm.9"></b><small data-i18n="bm.9d"></small></span>
+          <span class="bm__arrow" aria-hidden="true">→</span>
+        </a>
+      </nav>
+
+      <div class="deckdl reveal">
+        <div class="deckdl__thumb">
+          <img class="dk-ja" src="/assets/deck/cover-thumb-ja.jpg" alt="" />
+          <img class="dk-en" src="/assets/deck/cover-thumb-en.jpg" alt="" />
+          <img class="dk-zh" src="/assets/deck/cover-thumb-zh.jpg" alt="" />
+        </div>
+        <div class="deckdl__body">
+          <p class="deckdl__k" data-i18n="dk.k"></p>
+          <h3 data-i18n="dk.t"></h3>
+          <p class="deckdl__d" data-i18n="dk.d"></p>
+          <div class="deckdl__btns">
+            <a href="/assets/deck/VERION_Pitch_JA.pdf" download="VERION_Pitch_JA.pdf">日本語<span>PDF</span></a>
+            <a href="/assets/deck/VERION_Pitch_EN.pdf" download="VERION_Pitch_EN.pdf">English<span>PDF</span></a>
+            <a href="/assets/deck/VERION_Pitch_ZH.pdf" download="VERION_Pitch_ZH.pdf">中文<span>PDF</span></a>
+          </div>
+        </div>
+      </div>
+      <nav class="bm__list" style="margin-top:34px">
+        <a class="bm__row" href="/assets/deep/VERION_BusinessPlan_v1.0.pdf" download="VERION_事業計画書_v1.0.pdf">
+          <span class="bm__no">DL</span>
+          <span class="bm__body"><b data-i18n="bm.dl"></b><small data-i18n="bm.dld"></small></span>
+          <span class="bm__arrow" aria-hidden="true">↓</span>
+        </a>
+      </nav>
+    </div>
+  </section>
+
+  <!-- ── サイトマップ（全体像をひと目で）───────────────────────────── -->
+  <section class="chapter chapter--alt" id="sitemap">
+    <div class="chapter__inner">
+      <p class="chapter__num">SITE MAP</p>
+      <h2 class="chapter__title" data-i18n="map.title"></h2>
+      <p class="chapter__lede" data-i18n="map.lede"></p>
+      <div class="smap">
+        <div class="smap__col">
+          <p class="smap__h" data-i18n="map.main"></p>
+          <ol class="smap__list">
+          <li><a href="#chapter-01"><b>01</b><span data-i18n="toc.01"></span></a></li>
+          <li><a href="#chapter-02"><b>02</b><span data-i18n="toc.02"></span></a></li>
+          <li><a href="#chapter-03"><b>03</b><span data-i18n="toc.03"></span></a></li>
+          <li><a href="#chapter-04"><b>04</b><span data-i18n="toc.04"></span></a></li>
+          <li><a href="#chapter-05"><b>05</b><span data-i18n="toc.05"></span></a></li>
+          <li><a href="#chapter-06"><b>06</b><span data-i18n="toc.06"></span></a></li>
+          <li><a href="#chapter-07"><b>07</b><span data-i18n="toc.07"></span></a></li>
+          <li><a href="#chapter-08"><b>08</b><span data-i18n="toc.08"></span></a></li>
+          </ol>
+        </div>
+        <div class="smap__col">
+          <p class="smap__h" data-i18n="map.deep"></p>
+          <ol class="smap__list">
+          <li><a href="/deep-strategy.html"><b>00</b><span data-i18n="bm.10"></span></a></li>
+          <li><a href="/deep-product.html"><b>01</b><span data-i18n="bm.1"></span></a></li>
+          <li><a href="/deep-legal.html"><b>02</b><span data-i18n="bm.2"></span></a></li>
+          <li><a href="/deep-marketing.html"><b>03</b><span data-i18n="bm.3"></span></a></li>
+          <li><a href="/deep-cel.html"><b>04</b><span data-i18n="bm.4"></span></a></li>
+          <li><a href="/deep-why.html"><b>05</b><span data-i18n="bm.5"></span></a></li>
+          <li><a href="/deep-numbers.html"><b>06</b><span data-i18n="bm.6"></span></a></li>
+          <li><a href="/deep-ip.html"><b>07</b><span data-i18n="bm.7"></span></a></li>
+          <li><a href="/deep-monetize.html"><b>08</b><span data-i18n="bm.8"></span></a></li>
+          <li><a href="/deep-ai.html"><b>09</b><span data-i18n="bm.9"></span></a></li>
+          </ol>
+        </div>
+        <div class="smap__col">
+          <p class="smap__h" data-i18n="map.docs"></p>
+          <ul class="smap__list smap__list--plain">
+            <li><a href="/assets/deck/VERION_Pitch_JA.pdf" target="_blank" rel="noopener"><b>PDF</b><span data-i18n="map.pdfja"></span></a></li>
+            <li><a href="/assets/deck/VERION_Pitch_EN.pdf" target="_blank" rel="noopener"><b>PDF</b><span data-i18n="map.pdfen"></span></a></li>
+            <li><a href="/assets/deck/VERION_Pitch_ZH.pdf" target="_blank" rel="noopener"><b>PDF</b><span data-i18n="map.pdfzh"></span></a></li>
+          </ul>
+          <button type="button" class="smap__top" id="smap-top" data-i18n="map.top"></button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="asa reveal">
+    <p class="asa__k" data-i18n="asa.k"></p>
+    <div class="asa__stage">
+      <img class="asa__bust" src="/assets/asa-bust.png" alt="" />
+      <div class="asa__bubble">
+        <i class="asa__x">×</i>
+        <b data-i18n="asa.name"></b><small data-i18n="asa.role"></small>
+        <p data-i18n="asa.line1"></p>
+        <p data-i18n="asa.line2"></p>
+      </div>
+    </div>
+  </section>
+
+<footer class="footer">
+    <p class="footer__mark">VERION</p>
+    <p class="footer__conf" data-i18n="common.confidential"></p>
+    <p class="footer__note" data-i18n="footer.note"></p>
+  </footer>
+
+</div>
+
+<button type="button" class="backtop" id="backtop" hidden>
+  <span class="backtop__arrow" aria-hidden="true">↑</span><span data-i18n="nav.backtop"></span>
+</button>
+
+<div class="guide" id="guide" hidden></div>
+
+<noscript>
+  <div class="noscript">このサイトの閲覧には JavaScript が必要です。 / JavaScript is required. / 需要启用 JavaScript。</div>
+</noscript>
+
+</body>
+</html>

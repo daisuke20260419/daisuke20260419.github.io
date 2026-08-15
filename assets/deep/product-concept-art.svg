@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+  <title id="title">VERIONの開発中画面で使う一般化されたコンセプトアート</title>
+  <desc id="desc">特定の作品や人物を表さない黒と金の抽象図形</desc>
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="42%" r="76%">
+      <stop offset="0" stop-color="#26394c"/>
+      <stop offset=".46" stop-color="#131820"/>
+      <stop offset="1" stop-color="#07080b"/>
+    </radialGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#f3d594"/>
+      <stop offset=".48" stop-color="#b98a42"/>
+      <stop offset="1" stop-color="#5f4220"/>
+    </linearGradient>
+    <filter id="glow"><feGaussianBlur stdDeviation="13"/></filter>
+  </defs>
+  <rect width="1600" height="900" fill="url(#bg)"/>
+  <circle cx="800" cy="438" r="260" fill="none" stroke="#d7ae66" stroke-opacity=".14" stroke-width="2"/>
+  <circle cx="800" cy="438" r="190" fill="none" stroke="#d7ae66" stroke-opacity=".22" stroke-width="2"/>
+  <path d="M520 620 800 190l280 430-280-86Z" fill="url(#gold)" fill-opacity=".15" stroke="#d9b56e" stroke-opacity=".62" stroke-width="3"/>
+  <path d="m656 541 144-219 144 219-144-44Z" fill="none" stroke="#f1d696" stroke-opacity=".6" stroke-width="3"/>
+  <circle cx="800" cy="438" r="24" fill="#e7c984" filter="url(#glow)" opacity=".7"/>
+  <circle cx="800" cy="438" r="7" fill="#fff1c5"/>
+  <path d="M260 180h260M1080 180h260M260 720h260M1080 720h260" stroke="#d7ae66" stroke-opacity=".26" stroke-width="2"/>
+  <text x="800" y="770" text-anchor="middle" fill="#d7ae66" font-family="Helvetica,Arial,sans-serif" font-size="28" letter-spacing="10">VERION CONCEPT</text>
+  <text x="800" y="812" text-anchor="middle" fill="#8f9299" font-family="Helvetica,Arial,sans-serif" font-size="20" letter-spacing="4">DEVELOPMENT MOCK · NO LICENSED IP SHOWN</text>
+</svg>
